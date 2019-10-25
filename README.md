@@ -1,4 +1,4 @@
-## 交通信息管理系统
+## 交通信号配时管理系统
 ##资料
 [Spring 文档](https://spring.io/guides)
 [Spring Web](https://spring.io/guides/gs/serving-web-content/)

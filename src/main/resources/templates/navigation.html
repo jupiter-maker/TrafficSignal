@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="nav">
+    <nav class="navbar navbar-default">
+
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    <img alt="TrafficLight" src="https://img1.912688.com/265611ea-1b43-4f90-83ba-9e3197186893.jpg#" style="width: 25px;">
+                </a>
+                <a class="navbar-brand nav-title" href="/">交通信号配时管理系统</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <!-- Single button -->
+                <div class="btn-group nav-select">
+                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        路口建档 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a data-toggle="modal" data-target="#addIntersectionModal">
+                            新建路口
+                        </a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">路口管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">路口编辑</a></li>
+                    </ul>
+                </div>
+                <!-- Single button -->
+                <div class="btn-group nav-select">
+                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        路口巡检 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/">计划管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">计划编辑</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">问题分析</a></li>
+                    </ul>
+                </div>
+                <!-- Single button -->
+                <div class="btn-group nav-select">
+                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        舆情管理 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/">舆情列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">舆情处理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">舆情分析</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">同环比</a></li>
+                    </ul>
+                </div>
+                <!-- Single button -->
+                <div class="btn-group nav-select">
+                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        绿路优化 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/">优化管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">优化任务</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">新建绿路</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">绿路管理</a></li>
+                    </ul>
+                </div>
+                <!-- Single button -->
+                <div class="btn-group nav-select">
+                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        查询统计 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/">路口查询</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">台账导出</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">关于系统</a></li>
+
+                    </ul>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li >
+                        <a href="/">登录</a>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div><!-- /.container-fluid -->
+    </nav>
+
+</div>
+
+<div th:fragment="foot" class="footer">
+    <div>Copyright © 2019 <a href="https://github.com/jupiter-maker/community">Jupiter</a> 服务赞助：<a href="https://cloud.tencent.com/?fromSource=gwzcw.330897.330897.330897">腾讯云</a>    苏ICP备000000000号-3苏公网安备</div>
+</div>
+</body>
+</html>
