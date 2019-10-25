@@ -1,0 +1,18 @@
+2019-10-25 15:44:41.797  INFO 2180 --- [restartedMain] com.jupiter.ts.TsApplication             : Starting TsApplication on LAPTOP-3LJS3I3F with PID 2180 (D:\eclipse-workspace\ts\target\classes started by 谪仙 in D:\eclipse-workspace\ts)
+2019-10-25 15:44:41.797  INFO 2180 --- [restartedMain] com.jupiter.ts.TsApplication             : No active profile set, falling back to default profiles: default
+2019-10-25 15:44:41.859  INFO 2180 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2019-10-25 15:44:41.859  INFO 2180 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2019-10-25 15:44:42.533  WARN 2180 --- [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.jupiter.ts]' package. Please check your configuration.
+2019-10-25 15:44:42.907  INFO 2180 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8887 (http)
+2019-10-25 15:44:42.923  INFO 2180 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-10-25 15:44:42.923  INFO 2180 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.27]
+2019-10-25 15:44:43.001  INFO 2180 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-10-25 15:44:43.001  INFO 2180 --- [restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1142 ms
+2019-10-25 15:44:43.142  INFO 2180 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-25 15:44:43.189  INFO 2180 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-10-25 15:44:43.407  INFO 2180 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2019-10-25 15:44:43.439  INFO 2180 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8887 (http) with context path ''
+2019-10-25 15:44:43.439  INFO 2180 --- [restartedMain] com.jupiter.ts.TsApplication             : Started TsApplication in 2.045 seconds (JVM running for 3.38)
+2019-10-25 15:44:56.239  INFO 2180 --- [http-nio-8887-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-10-25 15:44:56.240  INFO 2180 --- [http-nio-8887-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-10-25 15:44:56.244  INFO 2180 --- [http-nio-8887-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
