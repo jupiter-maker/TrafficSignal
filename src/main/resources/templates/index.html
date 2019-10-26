@@ -3,11 +3,13 @@
 <head>
     <title>交通信号配时管理系统</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/ts.css">
-    <script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
-    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/ts.css">
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/index.js" type="application/javascript"></script>
+    <script src="/js/ts.js" type="application/javascript"></script>
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
@@ -30,14 +32,14 @@
                         <label class="col-sm-2 control-label">路口名</label>
                         <div class="col-sm-10">
                             <input type="text" name="isName" class="form-control"
-                                   id="isName_add_input" placeholder="路口名">
+                                   id="isName_add_input" placeholder="路口名" onchange="checkIsName(this)">
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">所属大队</label>
                         <div class="col-sm-10">
-                            <input type="text" name="idDd" class="form-control"
+                            <input type="text" name="isDd" class="form-control"
                                    id="idDd_add_input" placeholder="所属大队">
                             <span class="help-block"></span>
                         </div>
@@ -51,7 +53,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">信号机</label>
+                        <label class="col-sm-2 control-label">型号</label>
                         <div class="col-sm-10">
                             <input type="text" name="isXh" class="form-control"
                                    id="isXh_add_input" placeholder="信号机型号">
@@ -62,7 +64,7 @@
                         <label class="col-sm-2 control-label">时段数</label>
                         <div class="col-sm-10">
                             <input type="text" name="isSd" class="form-control"
-                                   id="isSd_add_input" placeholder="时段数">
+                                   id="isSd_add_input" placeholder="时段数（0-23）">
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -98,13 +100,11 @@
                             <span class="help-block"></span>
                         </div>
                     </div>
-
-
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="emp_save_btn">保存</button>
+                <button type="button" class="btn btn-primary" id="is_save_btn" onclick="addIntersection(this)">保存</button>
             </div>
         </div>
     </div>
