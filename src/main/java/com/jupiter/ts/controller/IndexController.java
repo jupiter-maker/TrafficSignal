@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IndexController {
 
     @GetMapping("/")
-    public String hello(Model model){
-        model.addAttribute("name","aaa");
+    public String index(Model model){
         return "index";
+    }
+
+    @GetMapping("/intersections")
+    public String intersections(){
+        return "/intersections";
     }
 }
