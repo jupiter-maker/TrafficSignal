@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 /**
  * 路口Controller
@@ -50,5 +48,19 @@ public class IntersectionController {
     public TsResultDto getIntersectionList(@RequestParam(value="pn",defaultValue="1")Integer pn){
         PageInfo pageInfo = intersectionService.getIntersectionList(pn, 10);
         return TsResultDto.ok(pageInfo);
+    }
+
+    @DeleteMapping("/delete/{ids}")
+    @ResponseBody
+    public TsResultDto deleteIntersection(@PathVariable("ids") String ids){
+        if(ids.contains("-")){
+            boolean result = intersectionService.deleteIntersections(ids);
+            if(result){
+                return TsResultDto.ok();
+            }else{
+                return TsResultDto.build(300,"批量删除失败");
+            }
+        }
+        return TsResultDto.build(300,"单个删除失败");
     }
 }

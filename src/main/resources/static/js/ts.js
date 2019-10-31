@@ -143,7 +143,6 @@ function addIntersection(e) {
                 //to_page(totalRecord);
             } else {
                 alert(result.msg);
-
             }
         }
     });

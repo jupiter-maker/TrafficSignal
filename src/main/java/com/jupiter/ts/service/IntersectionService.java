@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -78,5 +79,21 @@ public class IntersectionService {
         }).collect(Collectors.toList());
         PageInfo page = new PageInfo(intersectionDtos,rows);
         return page;
+    }
+
+    //批量删除路口信息
+    public boolean deleteIntersections(String ids){
+        String[] id_strs = ids.split("-");
+        List<Integer> id_list = new ArrayList<>();
+        for(String s:id_strs) {
+            id_list.add(Integer.parseInt(s));
+        }
+        IntersectionExample intersectionExample = new IntersectionExample();
+        intersectionExample.createCriteria().andIdIn(id_list);
+        int i = intersectionMapper.deleteByExample(intersectionExample);
+        if(i >= 0 ){
+            return true;
+        }
+        return false;
     }
 }
