@@ -8,6 +8,7 @@ import com.jupiter.ts.mapper.AnnunciatorMapper;
 import com.jupiter.ts.mapper.BrigadeMapper;
 import com.jupiter.ts.mapper.IntersectionMapper;
 import com.jupiter.ts.model.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,12 @@ public class IntersectionService {
     @Autowired
     private AnnunciatorMapper annunciatorMapper;
 
+
+    //根据id查询路口欣喜
+    public Intersection getIntersectionInfoById(Integer id){
+        Intersection intersection = intersectionMapper.selectByPrimaryKey(id);
+            return intersection;
+    }
     //校验路口名
     public boolean checkIsName(String isName){
         IntersectionExample intersectionExample = new IntersectionExample();
@@ -42,10 +49,18 @@ public class IntersectionService {
     }
 
     //保存路口
-    public boolean saveIntersection(Intersection intersection){
-        intersection.setIsCreate(System.currentTimeMillis());
-        intersection.setIsModified(System.currentTimeMillis());
-        int i = intersectionMapper.insertSelective(intersection);
+    public boolean createOrUpdateIntersection(Intersection intersection){
+        int i = 0;
+        if(intersection.getId()==null){
+            //添加路口
+            intersection.setIsCreate(System.currentTimeMillis());
+            intersection.setIsModified(System.currentTimeMillis());
+            i = intersectionMapper.insertSelective(intersection);
+        }else{
+            intersection.setIsCreate(System.currentTimeMillis());
+            intersection.setIsModified(System.currentTimeMillis());
+            i = intersectionMapper.updateByPrimaryKeySelective(intersection);
+        }
         if(i != 0){
             return true;
         }
@@ -67,7 +82,6 @@ public class IntersectionService {
 
         PageHelper.startPage(pn, rows);
         IntersectionExample intersectionExample = new IntersectionExample();
-        intersectionExample.setOrderByClause("is_dd_id");
         List<Intersection> intersections =  intersectionMapper.selectByExample(intersectionExample);
         //转换intersection为intersectionDto
         List<IntersectionDto> intersectionDtos = intersections.stream().map(intersection -> {
@@ -81,6 +95,15 @@ public class IntersectionService {
         return page;
     }
 
+    //单个删除路口信息
+    public boolean deleteIntersection(String ids){
+        Integer id = Integer.parseInt(ids);
+        int i = intersectionMapper.deleteByPrimaryKey(id);
+        if(i != 0){
+            return true;
+        }
+        return false;
+    }
     //批量删除路口信息
     public boolean deleteIntersections(String ids){
         String[] id_strs = ids.split("-");

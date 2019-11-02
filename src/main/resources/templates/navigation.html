@@ -12,78 +12,12 @@
                 <a class="navbar-brand nav-title" href="/">交通信号配时管理系统</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <!-- Single button -->
-                <div class="btn-group nav-select">
-                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        路口建档 <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a onclick="open_is_add_modal();">
-                            新建路口
-                        </a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/intersections">路口管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">路口编辑</a></li>
-                    </ul>
-                </div>
-                <!-- Single button -->
-                <div class="btn-group nav-select">
-                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        路口巡检 <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="/">计划管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">计划编辑</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">问题分析</a></li>
-                    </ul>
-                </div>
-                <!-- Single button -->
-                <div class="btn-group nav-select">
-                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        舆情管理 <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="/">舆情列表</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">舆情处理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">舆情分析</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">同环比</a></li>
-                    </ul>
-                </div>
-                <!-- Single button -->
-                <div class="btn-group nav-select">
-                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        绿路优化 <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="/">优化管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">优化任务</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">新建绿路</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">绿路管理</a></li>
-                    </ul>
-                </div>
-                <!-- Single button -->
-                <div class="btn-group nav-select">
-                    <button type="button" class="btn btn-success dropdown-toggle nav-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        查询统计 <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="/">路口查询</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">台账导出</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">关于系统</a></li>
+                <ul class="nav navbar-nav">
+                    <li class="active" id="is_list_btn"><a href="/intersections">路口管理<span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">Link</a></li>
 
-                    </ul>
-                </div>
+                </ul>
+
                 <ul class="nav navbar-nav navbar-right">
                     <li >
                         <a href="/">登录</a>

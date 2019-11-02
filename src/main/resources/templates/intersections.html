@@ -12,23 +12,132 @@
 </head>
 <body>
 <!--  导航条  -->
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">
-                <img alt="TrafficLight" src="https://img1.912688.com/265611ea-1b43-4f90-83ba-9e3197186893.jpg#" style="width: 25px;">
-            </a>
-            <a class="navbar-brand nav-title" href="/">交通信号配时管理系统</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li >
-                    <a href="/">登录</a>
-                </li>
-            </ul>
+<div th:insert="~{navigation :: nav}"></div>
+<!-- 新建路口模态框 -->
+<div class="modal fade" id="addIntersectionModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">添加路口</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">路口名</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="isName" class="form-control form-input"
+                                   id="isName_add_input" placeholder="路口名" onchange="checkIsName(this)">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属大队</label>
+                        <div class="col-sm-4">
+                            <!-- 大队提交大队id即可  -->
+                            <select class="form-control form-input-select" name="isDdId" id="isDd_select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属道路</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="isDl" class="form-control form-input"
+                                   id="isDl_add_input" placeholder="所属道路">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">机器型号</label>
+                        <div class="col-sm-4">
+                            <!-- 提交型号机型号id  -->
+                            <select class="form-control form-input-select" name="isXhId" id="isXh_select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">维护人员</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="isWhName" class="form-control form-input"
+                                   id="isWh_add_input" placeholder="维护人员">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="is_save_btn" onclick="addIntersection(this);">保存</button>
+            </div>
         </div>
     </div>
-</nav>
+</div>
+<!-- 更新路口模态框 -->
+<div class="modal fade" id="updateIntersectionModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">路口信息修改</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">路口名</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" name="id" id="is_update_id">
+                            <p class="form-control-static" id="isName_update_static"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属大队</label>
+                        <div class="col-sm-4">
+                            <!-- 大队提交大队id即可  -->
+                            <select class="form-control form-input-select" name="isDdId" id="isDd_update_select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属道路</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="isDl" class="form-control form-input"
+                                   id="isDl_update_input" placeholder="所属道路">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">机器型号</label>
+                        <div class="col-sm-4">
+                            <!-- 提交型号机型号id  -->
+                            <select class="form-control form-input-select" name="isXhId" id="isXh_update_select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">维护人员</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="isWhName" class="form-control form-input"
+                                   id="isWh_update_input" placeholder="维护人员">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="is_update_btn" onclick="updateIntersection();">更新</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- 路口资料页列表-->
 <div class="container-fluid">
@@ -38,7 +147,8 @@
                 <h3>路口资料管理页面</h3>
                 <hr>
             </div>
-            <div class="col-md-12 col-md-offset-11">
+            <div class="col-md-12 col-md-offset-10">
+                <button type="button" class="btn btn-success" id="is_add_modal_btn" onclick="open_is_add_modal();">新增路口</button>
                 <button type="button" class="btn btn-danger" id="is_delete_checked" onclick="delete_checked_all();">批量删除</button>
             </div>
         </div>
@@ -74,7 +184,6 @@
 
         </div>
 </div>
-<!--搭建显示页面  -->
 
 </body>
 </html>

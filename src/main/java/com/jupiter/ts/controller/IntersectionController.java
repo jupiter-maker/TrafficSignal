@@ -19,6 +19,23 @@ public class IntersectionController {
     @Autowired
     private IntersectionService intersectionService;
 
+
+    /**
+     * 根据id查询路口信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ResponseBody
+    public TsResultDto getIntersectionInfoById(@PathVariable("id") Integer id){
+        Intersection intersection = intersectionService.getIntersectionInfoById(id);
+        if(intersection != null){
+            return TsResultDto.ok(intersection);
+        }
+        return TsResultDto.build(300,"路口信息没有找到");
+
+    }
+
     @PostMapping("/checkIsName")
     @ResponseBody
     public TsResultDto checkIsName(@RequestParam("isName") String isName){
@@ -31,12 +48,12 @@ public class IntersectionController {
 
     @PostMapping("/save")
     @ResponseBody
-    public TsResultDto saveIntersection(Intersection intersection){
-        boolean result = intersectionService.saveIntersection(intersection);
+    public TsResultDto createOrUpdateIntersection(Intersection intersection){
+        boolean result = intersectionService.createOrUpdateIntersection(intersection);
         if(result){
             return TsResultDto.ok();
         }
-        return TsResultDto.build(300,"添加路口失败");
+        return TsResultDto.build(300,"添加或修改路口信息失败");
     }
 
     /**
@@ -50,7 +67,7 @@ public class IntersectionController {
         return TsResultDto.ok(pageInfo);
     }
 
-    @DeleteMapping("/delete/{ids}")
+    @DeleteMapping("/{ids}")
     @ResponseBody
     public TsResultDto deleteIntersection(@PathVariable("ids") String ids){
         if(ids.contains("-")){
@@ -60,7 +77,14 @@ public class IntersectionController {
             }else{
                 return TsResultDto.build(300,"批量删除失败");
             }
+        }else{
+            //单个删除
+            boolean result = intersectionService.deleteIntersection(ids);
+            if(result){
+                return TsResultDto.ok();
+            }else{
+                return TsResultDto.build(300,"删除路口信息失败");
+            }
         }
-        return TsResultDto.build(300,"单个删除失败");
     }
 }
