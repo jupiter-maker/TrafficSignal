@@ -12,7 +12,7 @@ function to_page(pn) {
         data: "pn=" + pn,
         type: "post",
         success: function (result) {
-            //1、解析并显示员工数据
+            //1、解析并显示路口数据
             build_is_table(result);
             //2、解析并显示分页信息
             build_page_info(result);
@@ -30,12 +30,15 @@ function build_is_table(result) {
     // console.log(result.data.list);
     var intersections = result.data.list;
     $.each(intersections, function (index, item) {
-        var checkBoxTd = $("<td><input type='checkbox' class='check_item' onclick='check_all_boolean();'/></td>");
+        var checkBoxTd = $("<td></td>").append(
+            $("<input type='checkbox' class='check_item' onclick='check_all_boolean();'/>").attr("delete_id",item.id)
+        );
         //var isIdTd = $("<td></td>").append(item.id);
         var isIdTd = $("<td></td>").append("&raquo;");
         var isDdTd = $("<td></td>").append(item.isDdName);
         var isDlTd = $("<td></td>").append(item.isDl);
-        var isNameTd = $("<td></td>").append(item.isName);
+        var isNameLink = $("<a></a>").append(item.isName).attr("href","/intersection/info/"+item.id);
+        var isNameTd = $("<td></td>").append(isNameLink);
         var isXhTd = $("<td></td>")
             .append(item.isXhName);
         //为编辑按钮添加自定义属性，id值
@@ -54,8 +57,8 @@ function build_is_table(result) {
         var btnTd = $("<td></td>").append(editBtn).append(" ").append(
             delBtn);
         //append方法执行完后返回原来的元素
-        $("<tr></tr>").append(checkBoxTd).append(isIdTd).append(isDdTd).append(
-            isDlTd).append(isNameTd).append(isXhTd).append(
+        $("<tr></tr>").append(checkBoxTd).append(isIdTd).append(isNameTd).append(
+            isDlTd).append(isDdTd).append(isXhTd).append(
             btnTd).appendTo("#is_table tbody");
     });
 }
@@ -143,8 +146,8 @@ function delete_checked_all(){
     var isNames = "";
     var id_strs = "";
     $.each($(".check_item:checked"),function(){
-        isNames += $(this).parents("tr").find("td:eq(4)").text()+",";
-        id_strs += $(this).parents("tr").find("td:eq(1)").text()+"-";
+        isNames += $(this).parents("tr").find("td:eq(2)").text()+",";
+        id_strs += $(this).attr("delete_id")+"-";
     });
     isNames = isNames.substring(0,isNames.length-1);
     id_strs = id_strs.substring(0,id_strs.length-1);
@@ -158,7 +161,7 @@ function delete_checked_all(){
                     //清除标题复选框
                     $("#check_all").prop("checked",false);
                     //回到当前页面
-                    alert(pageNum);
+                    //alert(pageNum);
                     to_page(pageNum);
                 }else{
                     alert(result.msg);
@@ -171,7 +174,7 @@ function delete_checked_all(){
 //单个删除
 function delete_single_is(e){
     //1、弹出确认删除对话框
-    var isName = $(e).parents("tr").find("td:eq(4)").text();
+    var isName = $(e).parents("tr").find("td:eq(2)").text();
     if(confirm("确认删除【"+isName+"】吗？")){
         $.ajax({
             url:"/intersection/"+$(e).attr("delete_id"),

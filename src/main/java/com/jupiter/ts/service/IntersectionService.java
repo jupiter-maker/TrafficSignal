@@ -7,6 +7,7 @@ import com.jupiter.ts.dto.IntersectionDto;
 import com.jupiter.ts.mapper.AnnunciatorMapper;
 import com.jupiter.ts.mapper.BrigadeMapper;
 import com.jupiter.ts.mapper.IntersectionMapper;
+import com.jupiter.ts.mapper.IntervalMapper;
 import com.jupiter.ts.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -30,9 +31,11 @@ public class IntersectionService {
     private BrigadeMapper brigadeMapper;
     @Autowired
     private AnnunciatorMapper annunciatorMapper;
+    @Autowired
+    private IntervalMapper intervalMapper;
 
 
-    //根据id查询路口欣喜
+    //根据id查询路口信息
     public Intersection getIntersectionInfoById(Integer id){
         Intersection intersection = intersectionMapper.selectByPrimaryKey(id);
             return intersection;
@@ -98,7 +101,12 @@ public class IntersectionService {
     //单个删除路口信息
     public boolean deleteIntersection(String ids){
         Integer id = Integer.parseInt(ids);
+        //删除路口信息
         int i = intersectionMapper.deleteByPrimaryKey(id);
+        //删除对应的时段信息
+        IntervalExample intervalExample = new IntervalExample();
+        intervalExample.createCriteria().andSdIsIdEqualTo(id);
+        intervalMapper.deleteByExample(intervalExample);
         if(i != 0){
             return true;
         }
@@ -111,9 +119,14 @@ public class IntersectionService {
         for(String s:id_strs) {
             id_list.add(Integer.parseInt(s));
         }
+        //删除路口信息
         IntersectionExample intersectionExample = new IntersectionExample();
         intersectionExample.createCriteria().andIdIn(id_list);
         int i = intersectionMapper.deleteByExample(intersectionExample);
+        //删除对应时段信息
+        IntervalExample intervalExample = new IntervalExample();
+        intervalExample.createCriteria().andSdIsIdIn(id_list);
+        intervalMapper.deleteByExample(intervalExample);
         if(i >= 0 ){
             return true;
         }

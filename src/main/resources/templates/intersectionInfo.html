@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>路口资料</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/ts.css">
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/moment.js" type="application/javascript"></script>
+    <script src="/js/is-interval.js" type="application/javascript"></script>
+</head>
+<body>
+<!--  导航条  -->
+<div th:insert="~{navigation :: nav}"></div>
+
+<!-- 路口资料页列表-->
+<div class="container-fluid">
+    <!--标题行  -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3 th:text="${sectionName }"></h3>
+            <hr>
+            <span class="text-desc">
+                <span style="color:#2aabd2">上传时间：</span><span
+                    th:text="${#dates.format(isInfo.modifiedTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+                <span style="color:#2aabd2;margin-left: 10%;">维护人员：</span><span th:text="${isInfo.whName}"></span>
+                <input type='hidden' id='sd_is_id_th' th:value="${isInfo.id}">
+            </span>
+            <div class="col-md-offset-11">
+                <button type="button" class="btn btn-info" onclick="add_interval_modal();">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加时段
+                </button>
+            </div>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-bordered" id="is_interval_table">
+            <thead>
+            <tr>
+                <th style="color:#2aabd2">#</th>
+                <th style="color:#2aabd2">时段名称</th>
+                <th style="color:#2aabd2">时段范围</th>
+                <th style="color:#2aabd2">方案号</th>
+                <th style="color:#2aabd2">控制方式</th>
+                <th style="color:#2aabd2">主相位</th>
+                <th style="color:#2aabd2">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

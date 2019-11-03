@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jupiter.ts.mapper.IntervalExtMapper">
+    <resultMap id="BaseResultMap" type="com.jupiter.ts.dto.IntervalDto">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="sd_start" jdbcType="VARCHAR" property="sdStart" />
+        <result column="sd_end" jdbcType="VARCHAR" property="sdEnd" />
+        <result column="fa_name" jdbcType="VARCHAR" property="faName" />
+        <result column="fa_method" jdbcType="BIGINT" property="faMethod" />
+        <result column="fa_zxw" jdbcType="BIGINT" property="faZxw" />
+    </resultMap>
+
+    <select id="selectByIsId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT sd.id,sd_start,sd_end,fa_name,fa_method,fa_zxw
+        FROM ts_sd sd
+        INNER JOIN ts_fa fa
+        ON sd.sd_fa_id = fa.id
+        WHERE sd.sd_is_id = #{id,jdbcType=INTEGER} ORDER BY sd.sd_start
+    </select>
+
+</mapper>
