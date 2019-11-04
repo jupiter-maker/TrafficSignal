@@ -18,4 +18,15 @@
         WHERE sd.sd_is_id = #{id,jdbcType=INTEGER} ORDER BY sd.sd_start
     </select>
 
+    <select id="selectIsNumByIsId" resultType="java.lang.Integer">
+        SELECT COUNT(*) isNum
+        FROM (
+            SELECT COUNT(*) isSdNum,sd_is_id isId FROM ts_sd GROUP BY sd_is_id
+        ) sd_is
+        WHERE sd_is.isId IN
+        <foreach close=")" collection="list" item="listItem" open="(" separator=",">
+            #{listItem}
+        </foreach>
+    </select>
+
 </mapper>

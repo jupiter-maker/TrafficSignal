@@ -99,12 +99,12 @@ public class IntersectionController {
     @RequestMapping("/info/{id}")
     public String intersectionInfo(@PathVariable("id") Integer id, Model model){
         Intersection intersection = intersectionService.getIntersectionInfoById(id);
-        IntersectionInfoDto intersectionInfoDto = new IntersectionInfoDto();
-        intersectionInfoDto.setId(intersection.getId());
-        intersectionInfoDto.setModifiedTime(intersection.getIsModified());
-        intersectionInfoDto.setWhName(intersection.getIsWhName());
+//        IntersectionInfoDto intersectionInfoDto = new IntersectionInfoDto();
+//        intersectionInfoDto.setId(intersection.getId());
+//        intersectionInfoDto.setModifiedTime(intersection.getIsModified());
+//        intersectionInfoDto.setWhName(intersection.getIsWhName());
         if(intersection != null){
-            model.addAttribute("isInfo",intersectionInfoDto);
+            model.addAttribute("isInfo",intersection);
         }
 
         model.addAttribute("sectionId","intersectionInfo");

@@ -24,8 +24,8 @@
             <hr>
             <span class="text-desc">
                 <span style="color:#2aabd2">上传时间：</span><span
-                    th:text="${#dates.format(isInfo.modifiedTime,'yyyy-MM-dd HH:mm:ss')}"></span>
-                <span style="color:#2aabd2;margin-left: 10%;">维护人员：</span><span th:text="${isInfo.whName}"></span>
+                    th:text="${#dates.format(isInfo.isModified,'yyyy-MM-dd HH:mm:ss')}"></span>
+                <span style="color:#2aabd2;margin-left: 10%;">维护人员：</span><span th:text="${isInfo.isWhName}"></span>
                 <input type='hidden' id='sd_is_id_th' th:value="${isInfo.id}">
             </span>
             <div class="col-md-offset-11">

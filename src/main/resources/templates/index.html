@@ -9,10 +9,55 @@
     <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/moment.js" type="application/javascript"></script>
+    <script src="/js/dd-list.js" type="application/javascript"></script>
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
 
+<!-- 大队列表 -->
+<div class="container-fluid">
+    <!--标题行  -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3 th:text="${sectionName }"></h3>
+            <hr>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <table class="table table-bordered" id="dd-list-table">
+                <thead>
+                <tr class="active">
+                    <th>大队名称</th>
+                    <th>路口总数</th>
+                    <th>时段配置路口数</th>
+                    <th>方案配置路口数</th>
+                    <th>两相位路口数</th>
+                    <th>多相位路口数</th>
+                    <th>绿波带条数</th>
+                    <th>修改资料路口数</th>
+                    <th>更新配时路口数</th>
+                    <th>单位自建路口数</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><h5>合计</h5></td>
+                    <td>154</td>
+                    <td>时段配置路口数</td>
+                    <td>方案配置路口数</td>
+                    <td>两相位路口数</td>
+                    <td>多相位路口数</td>
+                    <td>绿波带条数</td>
+                    <td>修改资料路口数</td>
+                    <td>更新配时路口数</td>
+                    <td>单位自建路口数</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
 
 </body>
 </html>

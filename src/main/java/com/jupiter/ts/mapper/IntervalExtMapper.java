@@ -10,4 +10,7 @@ import java.util.List;
 public interface IntervalExtMapper {
 
     List<IntervalDto> selectByIsId(@Param("id") Integer id);
+
+    //返回指定路口id链表中配置了时段的路口数
+    Integer selectIsNumByIsId(List<Integer> isIdList);
 }

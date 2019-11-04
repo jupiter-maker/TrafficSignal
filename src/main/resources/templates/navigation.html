@@ -12,8 +12,12 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active" id="is_list_btn"><a href="/intersections">路口管理<span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Link</a></li>
+                    <li th:class="${sectionId  == 'brigades'}? 'active':''">
+                        <a href="/">大队列表</a>
+                    </li>
+                    <li th:class="${sectionId  == 'intersections'}? 'active':''" >
+                        <a href="/intersections">路口管理</a>
+                    </li>
 
                 </ul>
 
