@@ -144,8 +144,23 @@
 <div class="container-fluid">
         <!--标题行  -->
         <div class="row">
-            <div class="col-md-12">
-                <h3>路口资料管理页面</h3>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <h3 th:text="${sectionName }"></h3>
+            </div>
+            <div  class="col-lg-2 col-md-12 col-sm-12 col-xs-12" th:if="${sectionId == 'brigadeIntersection'}">
+                <input type='hidden' id='dd_search_id' th:value="${brigadeId }">
+                <select class="form-control form-input-select dd-search" id="dd_search_select" onchange="change_dd_search(this);">
+                </select>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" th:if="${sectionId == 'intersections'}">
+                <form class="navbar-form navbar-left is-search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="is_name_search" placeholder="搜索路口">
+                    </div>
+                    <button type="button" class="btn btn-default" onclick="change_is_search();">搜索</button>
+                </form>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <hr>
             </div>
             <div class="col-md-12 col-md-offset-10">
@@ -163,9 +178,9 @@
                             <input type="checkbox" id="check_all" onclick="check_all(this)">
                         </th>
                         <th>#</th>
-                        <th>路口名称</th>
-                        <th>所属道路</th>
                         <th>所属大队</th>
+                        <th>所属道路</th>
+                        <th>路口名称</th>
                         <th>设备型号</th>
                         <th>操作</th>
                     </tr>

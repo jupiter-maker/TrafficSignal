@@ -1,25 +1,80 @@
-var totalRecord;
-var pageNum;
+var totalRecord;  //总记录数
+var pageNum; //当前页数
+var pages; //总页数
+var brigadeId=1;//大队查询时的id
+var search;  //查询条件
+var action; //查询操作
 $(function () {
-    //去首页
-    to_page(1);
-});
 
+    //判断当前是什么页面
+    if($("#dd_search_select").length>0){
+        //大队搜索页面
+        //向搜索框内填充大队信息
+        brigadeId = $("#dd_search_id").val();
+        //alert("大队搜索页面id:"+brigadeId);
+        getBrigades("#dd_search_select");
+        search = brigadeId;
+        action = "ddSearch";
+        to_page(1);
+    }
+    if($("#is_name_search").length>0){
+        //路口搜索页面
+        //alert("路口搜索页面");
+        //获取搜索框中的值
+        search = $("#is_name_search").val();
+        action = "isSearch";
+        to_page(1);
+    }
+
+});
+//改变大队搜索条件
+function change_dd_search(e){
+    search = $(e).val();
+    action = "ddSearch";
+    //alert(search);
+    to_page(1);
+}
+//改变路口搜索条件
+function change_is_search(){
+    search = $("#is_name_search").val();
+    //alert(search);
+    action = "isSearch";
+    to_page(1);
+}
+//去首页
 function to_page(pn) {
     $("#check_all").prop("checked", false);
-    $.ajax({
-        url: "/intersection/list",
-        data: "pn=" + pn,
-        type: "post",
-        success: function (result) {
-            //1、解析并显示路口数据
-            build_is_table(result);
-            //2、解析并显示分页信息
-            build_page_info(result);
-            //3、显示导航条信息
-            build_page_nav(result);
-        }
-    });
+    //大队搜索
+    if(action == "ddSearch"){
+        $.ajax({
+            url: "/intersection/list/brigade",
+            data: "pn=" + pn + "&search="+search,
+            type: "post",
+            success: function (result) {
+                //1、解析并显示路口数据
+                build_is_table(result);
+                //2、解析并显示分页信息
+                build_page_info(result);
+                //3、显示导航条信息
+                build_page_nav(result);
+            }
+        });
+    }else if(action =="isSearch"){
+        //路口搜索
+        $.ajax({
+            url: "/intersection/list/is",
+            data: "pn=" + pn + "&search="+search,
+            type: "post",
+            success: function (result) {
+                //1、解析并显示路口数据
+                build_is_table(result);
+                //2、解析并显示分页信息
+                build_page_info(result);
+                //3、显示导航条信息
+                build_page_nav(result);
+            }
+        });
+    }
 }
 
 //解析显示路口信息
@@ -57,8 +112,8 @@ function build_is_table(result) {
         var btnTd = $("<td></td>").append(editBtn).append(" ").append(
             delBtn);
         //append方法执行完后返回原来的元素
-        $("<tr></tr>").append(checkBoxTd).append(isIdTd).append(isNameTd).append(
-            isDlTd).append(isDdTd).append(isXhTd).append(
+        $("<tr></tr>").append(checkBoxTd).append(isIdTd).append(isDdTd).append(
+            isDlTd).append(isNameTd).append(isXhTd).append(
             btnTd).appendTo("#is_table tbody");
     });
 }
@@ -73,6 +128,8 @@ function build_page_info(result) {
         + result.data.total + "条记录");
     totalRecord = result.data.total;
     pageNum = result.data.pageNum;
+    pages = result.data.pages;
+    //alert(pages);
 }
 
 //解析显示分页条
@@ -204,6 +261,9 @@ function getBrigades(e){
                     var optionEle = $("<option></option>").append(item.ddName).attr("value",item.id);
                     optionEle.appendTo(e);
                 });
+                //初始化大队选择框id
+                $(e).val([brigadeId]);
+
             }else{
                 alert(result.msg);
             }
@@ -376,13 +436,13 @@ function addIntersection(e) {
         data: $("#addIntersectionModal form").serialize(),
         success: function (result) {
             if (result.status == 200) {
-                alert(result.msg);
+                //alert(result.msg);
                 //员工保存成功
                 //1、关闭模态框
                 $("#addIntersectionModal").modal("hide");
                 //2、来到最后一页，显示最后一页数据
                 //发送请求显示最后一页
-                to_page(totalRecord);
+                to_page(pages);
             } else {
                 alert(result.msg);
             }

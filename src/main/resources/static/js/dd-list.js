@@ -31,7 +31,7 @@ function build_brigade_table(result) {
     var isFaNumCoun = 0;
     $.each(brigades, function (index, item) {
         var ddNameTd = $("<td></td>").append(
-            $("<a></a>").append(item.ddName).attr("href","/brigade/"+item.id)
+            $("<a></a>").append(item.ddName).attr("href","/brigade/intersections?brigadeId="+item.id)
         );
         isNumCount += item.isNum;
         isSdNumCount += item.isSdNum;

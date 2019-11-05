@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jupiter.ts.mapper.IntersectionExtMapper">
+    <resultMap id="BaseResultMap" type="com.jupiter.ts.dto.IntersectionDto">
+
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="is_dd_name" jdbcType="VARCHAR" property="isDdName" />
+        <result column="is_name" jdbcType="VARCHAR" property="isName" />
+        <result column="is_dl" jdbcType="VARCHAR" property="isDl" />
+        <result column="is_xh_name" jdbcType="VARCHAR" property="isXhName" />
+
+    </resultMap>
+
+    <select id="selectIntersectionListByDdId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT ist.id id,dd_name is_dd_name,is_name,is_dl,xh_name is_xh_name FROM ts_is ist
+        INNER JOIN  ts_dd dd ON  ist.is_dd_id = dd.id AND dd.id=#{search}
+        INNER JOIN ts_xh xh ON ist.is_xh_id = xh.id
+        ORDER BY ist.is_create
+    </select>
+    <select id="selectIntersectionListByIsName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT ist.id id,dd_name is_dd_name,is_name,is_dl,xh_name is_xh_name FROM ts_is ist
+        INNER JOIN  ts_dd dd ON  ist.is_dd_id = dd.id
+        INNER JOIN ts_xh xh ON ist.is_xh_id = xh.id
+        WHERE ist.is_name LIKE #{search}
+        ORDER BY ist.is_create
+    </select>
+    <select id="selectIntersectionList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT ist.id id,dd_name is_dd_name,is_name,is_dl,xh_name is_xh_name FROM ts_is ist
+        INNER JOIN  ts_dd dd ON  ist.is_dd_id = dd.id
+        INNER JOIN ts_xh xh ON ist.is_xh_id = xh.id
+        ORDER BY ist.is_create
+    </select>
+</mapper>

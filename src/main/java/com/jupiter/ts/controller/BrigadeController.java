@@ -6,9 +6,8 @@ import com.jupiter.ts.model.Brigade;
 import com.jupiter.ts.service.BrigadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,5 +43,13 @@ public class BrigadeController {
             return TsResultDto.build(300,"查询大队列表信息失败");
         }
         return TsResultDto.ok(brigadeList);
+    }
+
+    @GetMapping("/intersections")
+    public String brigadeIntersection(@RequestParam(value="brigadeId",defaultValue = "1") Integer brigadeId, Model model){
+        model.addAttribute("brigadeId",brigadeId);
+        model.addAttribute("sectionId","brigadeIntersection");
+        model.addAttribute("sectionName","大队-路口信息统计");
+        return "/intersections";
     }
 }

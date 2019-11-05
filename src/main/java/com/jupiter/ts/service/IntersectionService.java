@@ -4,10 +4,7 @@ package com.jupiter.ts.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jupiter.ts.dto.IntersectionDto;
-import com.jupiter.ts.mapper.AnnunciatorMapper;
-import com.jupiter.ts.mapper.BrigadeMapper;
-import com.jupiter.ts.mapper.IntersectionMapper;
-import com.jupiter.ts.mapper.IntervalMapper;
+import com.jupiter.ts.mapper.*;
 import com.jupiter.ts.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +24,8 @@ public class IntersectionService {
 
     @Autowired
     private IntersectionMapper intersectionMapper;
+    @Autowired
+    private IntersectionExtMapper intersectionExtMapper;
     @Autowired
     private BrigadeMapper brigadeMapper;
     @Autowired
@@ -70,34 +69,35 @@ public class IntersectionService {
         return false;
     }
 
-    //获取路口信息分页列表
-    public PageInfo getIntersectionList(Integer pn,int rows){
-        //获取大队信息
-        BrigadeExample example = new BrigadeExample();
-        List<Brigade> brigades = brigadeMapper.selectByExample(example);
-        //将大队信息转换为Map集合
-        Map<Integer,String> brigadeMap = brigades.stream().collect(Collectors.toMap(brigade -> brigade.getId(),brigade -> brigade.getDdName()));
-
-        //获取设备型号信息
-        AnnunciatorExample annunciatorExample = new AnnunciatorExample();
-        List<Annunciator> annunciators = annunciatorMapper.selectByExample(annunciatorExample);
-        Map<Integer,String> annunciatorMap = annunciators.stream().collect(Collectors.toMap(annunciator -> annunciator.getId(),annunciator -> annunciator.getXhName()));
+    //根据路口名称获取路口信息分页列表
+    public PageInfo getIntersectionListByIs(Integer pn,int rows,String search){
 
         PageHelper.startPage(pn, rows);
-        IntersectionExample intersectionExample = new IntersectionExample();
-        List<Intersection> intersections =  intersectionMapper.selectByExample(intersectionExample);
-        //转换intersection为intersectionDto
-        List<IntersectionDto> intersectionDtos = intersections.stream().map(intersection -> {
-            IntersectionDto intersectionDto = new IntersectionDto();
-            BeanUtils.copyProperties(intersection,intersectionDto);
-            intersectionDto.setIsDdName(brigadeMap.get(intersection.getIsDdId()));
-            intersectionDto.setIsXhName(annunciatorMap.get(intersection.getIsXhId()));
-            return intersectionDto;
-        }).collect(Collectors.toList());
+        List<IntersectionDto> intersectionDtos;
+        if(StringUtils.isNotBlank(search)){
+            //搜索框不为空
+            intersectionDtos = intersectionExtMapper.selectIntersectionListByIsName("%"+search+"%");
+        }else{
+            intersectionDtos = intersectionExtMapper.selectIntersectionList();
+        }
         PageInfo page = new PageInfo(intersectionDtos,rows);
         return page;
     }
 
+    //根据大队id获取路口信息分页列表
+    public PageInfo getIntersectionListByBrigade(Integer pn,int rows,Integer search){
+
+        PageHelper.startPage(pn, rows);
+        List<IntersectionDto> intersectionDtos;
+        if(search != null){
+            //大队id不为空
+            intersectionDtos = intersectionExtMapper.selectIntersectionListByDdId(search);
+        }else{
+            intersectionDtos = intersectionExtMapper.selectIntersectionList();
+        }
+        PageInfo page = new PageInfo(intersectionDtos,rows);
+        return page;
+    }
     //单个删除路口信息
     public boolean deleteIntersection(String ids){
         Integer id = Integer.parseInt(ids);

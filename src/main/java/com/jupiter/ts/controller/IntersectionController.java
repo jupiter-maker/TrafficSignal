@@ -2,8 +2,6 @@ package com.jupiter.ts.controller;
 
 
 import com.github.pagehelper.PageInfo;
-import com.jupiter.ts.dto.IntersectionDto;
-import com.jupiter.ts.dto.IntersectionInfoDto;
 import com.jupiter.ts.dto.TsResultDto;
 import com.jupiter.ts.model.Intersection;
 import com.jupiter.ts.service.IntersectionService;
@@ -60,16 +58,30 @@ public class IntersectionController {
     }
 
     /**
-     * 获取路口信息列表
+     * 通过路口名检索获取路口信息列表
      * @return
      */
-    @RequestMapping("/list")
+    @PostMapping("/list/is")
     @ResponseBody
-    public TsResultDto getIntersectionList(@RequestParam(value="pn",defaultValue="1")Integer pn){
-        PageInfo pageInfo = intersectionService.getIntersectionList(pn, 10);
+    public TsResultDto getIntersectionListByIs(@RequestParam(value="pn",defaultValue="1")Integer pn,
+                                           @RequestParam(value="search",required = false) String search){
+        //System.out.println("/list/is"+search);
+        PageInfo pageInfo = intersectionService.getIntersectionListByIs(pn, 10, search);
         return TsResultDto.ok(pageInfo);
     }
 
+    /**
+     * 通过大队id检索获取路口信息列表
+     * @return
+     */
+    @PostMapping("/list/brigade")
+    @ResponseBody
+    public TsResultDto getIntersectionListByBrigade(@RequestParam(value="pn",defaultValue="1")Integer pn,
+                                           @RequestParam(value="search",required = false) Integer search){
+        //System.out.println("/list/brigade"+search);
+        PageInfo pageInfo = intersectionService.getIntersectionListByBrigade(pn, 10,search);
+        return TsResultDto.ok(pageInfo);
+    }
     /**
      * 删除路口信息
      * @param ids

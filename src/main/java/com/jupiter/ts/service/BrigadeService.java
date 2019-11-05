@@ -6,7 +6,6 @@ import com.jupiter.ts.mapper.BrigadeMapper;
 import com.jupiter.ts.mapper.IntersectionMapper;
 import com.jupiter.ts.mapper.IntervalExtMapper;
 import com.jupiter.ts.model.*;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
