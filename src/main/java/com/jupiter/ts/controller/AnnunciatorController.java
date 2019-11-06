@@ -1,6 +1,7 @@
 package com.jupiter.ts.controller;
 
 import com.jupiter.ts.dto.TsResultDto;
+import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.model.Annunciator;
 import com.jupiter.ts.service.AnnunciatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class AnnunciatorController {
     @ResponseBody
     public TsResultDto getAllAnnunciator(){
         List<Annunciator> annunciators = annunciatorService.getAllAnnunciator();
+        if(annunciators == null || annunciators.size() == 0){
+            return TsResultDto.build(CustomizeErrorCode.ANNUNCIATOR_NOT_FOUND);
+        }
         return TsResultDto.ok(annunciators);
 
     }

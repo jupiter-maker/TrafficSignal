@@ -4,12 +4,15 @@ package com.jupiter.ts.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jupiter.ts.dto.IntersectionDto;
+import com.jupiter.ts.exception.CustomizeErrorCode;
+import com.jupiter.ts.exception.CustomizeException;
 import com.jupiter.ts.mapper.*;
 import com.jupiter.ts.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +39,20 @@ public class IntersectionService {
 
     //根据id查询路口信息
     public Intersection getIntersectionInfoById(Integer id){
-        Intersection intersection = intersectionMapper.selectByPrimaryKey(id);
-            return intersection;
+        Intersection intersection =null;
+        try{
+            intersection = intersectionMapper.selectByPrimaryKey(id);
+        }catch(Exception e){
+            throw new CustomizeException(CustomizeErrorCode.BRIGEDE_LIST_NOT_FOUND);
+        }
+        return intersection;
     }
     //校验路口名
     public boolean checkIsName(String isName){
         IntersectionExample intersectionExample = new IntersectionExample();
         intersectionExample.createCriteria().andIsNameEqualTo(isName);
         List<Intersection> intersections = intersectionMapper.selectByExample(intersectionExample);
-        if(intersections==null || intersections.size()==0){
+        if(intersections == null || intersections.size()==0){
             return true;
         }
         return false;
@@ -59,7 +67,6 @@ public class IntersectionService {
             intersection.setIsModified(System.currentTimeMillis());
             i = intersectionMapper.insertSelective(intersection);
         }else{
-            intersection.setIsCreate(System.currentTimeMillis());
             intersection.setIsModified(System.currentTimeMillis());
             i = intersectionMapper.updateByPrimaryKeySelective(intersection);
         }
@@ -74,11 +81,15 @@ public class IntersectionService {
 
         PageHelper.startPage(pn, rows);
         List<IntersectionDto> intersectionDtos;
-        if(StringUtils.isNotBlank(search)){
-            //搜索框不为空
-            intersectionDtos = intersectionExtMapper.selectIntersectionListByIsName("%"+search+"%");
-        }else{
-            intersectionDtos = intersectionExtMapper.selectIntersectionList();
+        try{
+            if(StringUtils.isNotBlank(search)){
+                //搜索框不为空
+                intersectionDtos = intersectionExtMapper.selectIntersectionListByIsName("%"+search+"%");
+            }else{
+                intersectionDtos = intersectionExtMapper.selectIntersectionList();
+            }
+        }catch(Exception e){
+            throw new CustomizeException(CustomizeErrorCode.INTERSECTION_LIST_NOT_FOUND);
         }
         PageInfo page = new PageInfo(intersectionDtos,rows);
         return page;
@@ -89,11 +100,15 @@ public class IntersectionService {
 
         PageHelper.startPage(pn, rows);
         List<IntersectionDto> intersectionDtos;
-        if(search != null){
-            //大队id不为空
-            intersectionDtos = intersectionExtMapper.selectIntersectionListByDdId(search);
-        }else{
-            intersectionDtos = intersectionExtMapper.selectIntersectionList();
+        try{
+            if(search != null){
+                //大队id不为空
+                intersectionDtos = intersectionExtMapper.selectIntersectionListByDdId(search);
+            }else{
+                intersectionDtos = intersectionExtMapper.selectIntersectionList();
+            }
+        }catch(Exception e){
+            throw new CustomizeException(CustomizeErrorCode.INTERSECTION_LIST_NOT_FOUND);
         }
         PageInfo page = new PageInfo(intersectionDtos,rows);
         return page;
@@ -113,6 +128,7 @@ public class IntersectionService {
         return false;
     }
     //批量删除路口信息
+    @Transactional
     public boolean deleteIntersections(String ids){
         String[] id_strs = ids.split("-");
         List<Integer> id_list = new ArrayList<>();

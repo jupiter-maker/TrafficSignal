@@ -2,6 +2,7 @@ package com.jupiter.ts.controller;
 
 import com.jupiter.ts.dto.IntervalDto;
 import com.jupiter.ts.dto.TsResultDto;
+import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.model.Interval;
 import com.jupiter.ts.service.IntervalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class IntervalController {
         if(result){
             return TsResultDto.ok();
         }
-        return TsResultDto.build(300,"创建时段失败");
+        return TsResultDto.build(CustomizeErrorCode.INTERVAL_CREATE_FAILED);
     }
 
     @GetMapping("/{isId}")
@@ -35,7 +36,7 @@ public class IntervalController {
     public TsResultDto selectByIsId(@PathVariable Integer isId){
         List<IntervalDto> intervalDtos = intervalService.selectByIsId(isId);
         if(intervalDtos.size() == 0 && intervalDtos == null){
-            return TsResultDto.build(300,"查询时段失败");
+            return TsResultDto.build(CustomizeErrorCode.INTERVAL_LIST_NOT_FOUND);
         }
         return TsResultDto.ok(intervalDtos);
     }
@@ -47,6 +48,6 @@ public class IntervalController {
         if(result){
             return TsResultDto.ok();
         }
-        return TsResultDto.build(300,"删除时段失败");
+        return TsResultDto.build(CustomizeErrorCode.INTERVAL_DELETE_FAILED);
     }
 }

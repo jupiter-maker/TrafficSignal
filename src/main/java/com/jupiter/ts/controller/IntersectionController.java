@@ -3,6 +3,8 @@ package com.jupiter.ts.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.jupiter.ts.dto.TsResultDto;
+import com.jupiter.ts.exception.CustomizeErrorCode;
+import com.jupiter.ts.exception.CustomizeException;
 import com.jupiter.ts.model.Intersection;
 import com.jupiter.ts.service.IntersectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,7 @@ public class IntersectionController {
         if(intersection != null){
             return TsResultDto.ok(intersection);
         }
-        return TsResultDto.build(300,"路口信息没有找到");
+        return TsResultDto.build(CustomizeErrorCode.INTERSECTION_NOT_FOUND);
 
     }
 
@@ -44,7 +46,7 @@ public class IntersectionController {
         if(result){
             return TsResultDto.ok();
         }
-        return TsResultDto.build(300,"路口名重复");
+        return TsResultDto.build(CustomizeErrorCode.INTERSECTION_NAME_REPETITION);
     }
 
     @PostMapping("/save")
@@ -54,7 +56,7 @@ public class IntersectionController {
         if(result){
             return TsResultDto.ok();
         }
-        return TsResultDto.build(300,"添加或修改路口信息失败");
+        return TsResultDto.build(CustomizeErrorCode.INTERSECTION_CREATE_OR_UPDATE_FAILED);
     }
 
     /**
@@ -95,7 +97,7 @@ public class IntersectionController {
             if(result){
                 return TsResultDto.ok();
             }else{
-                return TsResultDto.build(300,"批量删除失败");
+                return TsResultDto.build(CustomizeErrorCode.INTERSECTION_BATCH_DELETE_FAILED);
             }
         }else{
             //单个删除
@@ -103,7 +105,7 @@ public class IntersectionController {
             if(result){
                 return TsResultDto.ok();
             }else{
-                return TsResultDto.build(300,"删除路口信息失败");
+                return TsResultDto.build(CustomizeErrorCode.INTERSECTION_SINGLE_DELETE_FAILED);
             }
         }
     }
@@ -111,12 +113,11 @@ public class IntersectionController {
     @RequestMapping("/info/{id}")
     public String intersectionInfo(@PathVariable("id") Integer id, Model model){
         Intersection intersection = intersectionService.getIntersectionInfoById(id);
-//        IntersectionInfoDto intersectionInfoDto = new IntersectionInfoDto();
-//        intersectionInfoDto.setId(intersection.getId());
-//        intersectionInfoDto.setModifiedTime(intersection.getIsModified());
-//        intersectionInfoDto.setWhName(intersection.getIsWhName());
+
         if(intersection != null){
             model.addAttribute("isInfo",intersection);
+        }else{
+            throw new CustomizeException(CustomizeErrorCode.INTERSECTION_NOT_FOUND);
         }
 
         model.addAttribute("sectionId","intersectionInfo");

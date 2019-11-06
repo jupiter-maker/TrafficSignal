@@ -5,6 +5,8 @@ import java.util.List;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jupiter.ts.exception.CustomizeException;
+import com.jupiter.ts.exception.ICustomizeErrorCode;
 
 /**
  * description:自定义相应结构
@@ -149,4 +151,11 @@ public class TsResultDto {
         }
     }
 
+    public static TsResultDto build(CustomizeException e) {
+        return TsResultDto.build(e.getStatus(),e.getMessage());
+    }
+
+    public static TsResultDto build(ICustomizeErrorCode e) {
+        return TsResultDto.build(e.getStatus(),e.getMsg());
+    }
 }

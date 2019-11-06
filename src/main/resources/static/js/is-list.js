@@ -1,6 +1,5 @@
 var totalRecord;  //总记录数
 var pageNum; //当前页数
-var pages; //总页数
 var brigadeId=1;//大队查询时的id
 var search;  //查询条件
 var action; //查询操作
@@ -128,8 +127,6 @@ function build_page_info(result) {
         + result.data.total + "条记录");
     totalRecord = result.data.total;
     pageNum = result.data.pageNum;
-    pages = result.data.pages;
-    //alert(pages);
 }
 
 //解析显示分页条
@@ -203,7 +200,7 @@ function delete_checked_all(){
     var isNames = "";
     var id_strs = "";
     $.each($(".check_item:checked"),function(){
-        isNames += $(this).parents("tr").find("td:eq(2)").text()+",";
+        isNames += $(this).parents("tr").find("td:eq(4)").text()+",";
         id_strs += $(this).attr("delete_id")+"-";
     });
     isNames = isNames.substring(0,isNames.length-1);
@@ -231,14 +228,14 @@ function delete_checked_all(){
 //单个删除
 function delete_single_is(e){
     //1、弹出确认删除对话框
-    var isName = $(e).parents("tr").find("td:eq(2)").text();
+    var isName = $(e).parents("tr").find("td:eq(4)").text();
     if(confirm("确认删除【"+isName+"】吗？")){
         $.ajax({
             url:"/intersection/"+$(e).attr("delete_id"),
             type:"DELETE",
             success:function(result){
                 if(result.status == 200){
-                    alert(result.msg);
+                    //alert(result.msg);
                     to_page(pageNum);
                 }else{
                     alert(result.msg);
@@ -314,7 +311,7 @@ function open_is_add_modal(){
 }
 //打开路口更新模态框
 function open_is_update_model(e){
-    alert("编辑路口信息"+":"+$(e).attr("edit_id"));
+    //alert("编辑路口信息"+":"+$(e).attr("edit_id"));
     //清除表单数据（表单重置（表单中的数据，表单的样式））
     //$("#empAddModal form")[0].reset();
     reset_form("#updateIntersectionModal form");
@@ -392,7 +389,7 @@ function show_validate_msg(ele, status, msg) {
         $(ele).parent().addClass("has-success");
         $(ele).next("span").text(msg);
     } else if ("error" == status) {
-        alert("路口名重复");
+        //alert("路口名重复");
         $(ele).parent().addClass("has-error");
         $(ele).next("span").text(msg);
     }
@@ -442,7 +439,7 @@ function addIntersection(e) {
                 $("#addIntersectionModal").modal("hide");
                 //2、来到最后一页，显示最后一页数据
                 //发送请求显示最后一页
-                to_page(pages);
+                to_page(totalRecord);
             } else {
                 alert(result.msg);
             }
@@ -464,7 +461,7 @@ function updateIntersection(){
         data: $("#updateIntersectionModal form").serialize(),
         success: function (result) {
             if (result.status == 200) {
-                alert(result.msg);
+                //alert(result.msg);
                 //员工保存成功
                 //1、关闭模态框
                 $("#updateIntersectionModal").modal("hide");

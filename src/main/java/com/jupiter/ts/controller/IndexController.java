@@ -1,7 +1,8 @@
 package com.jupiter.ts.controller;
 
-import com.jupiter.ts.dto.TsResultDto;
-import com.jupiter.ts.model.Intersection;
+
+import com.jupiter.ts.mapper.IntersectionMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
+    @Autowired
+    private IntersectionMapper intersectionMapper;
     //返回首页
     @GetMapping("/")
     public String index(Model model){

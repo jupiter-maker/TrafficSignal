@@ -46,6 +46,9 @@
         <!-- 时段表 -->
         <table schema="" tableName="ts_sd" domainObjectName="Interval" >
         </table>
+        <!-- 道路表 -->
+        <table schema="" tableName="ts_sd" domainObjectName="Road" >
+        </table>
 
 
     </context>

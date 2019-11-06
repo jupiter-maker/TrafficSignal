@@ -175,8 +175,12 @@ function validate_add_is_interval(e){
         return false;
     }
     if(!formateCheck(start) || !formateCheck(end)){
-        alert("请按照格式填写时段信息(HH:mm)");
+        alert("请按照格式填写时段信息(HH:mm),英文格式");
         return false;
+    }
+    if(start>end || start == end){
+        alert("请填写合理的时段信息");
+       return false;
     }
     return true;
 }
@@ -188,7 +192,7 @@ function add_interval_modal(){
         return false;
     }
     var sdNum = $(".sd-tr").length;
-    alert(sdNum);
+    //alert(sdNum);
     if(sdNum >= 24){
         alert("最多只能有24个时段");
         return false;

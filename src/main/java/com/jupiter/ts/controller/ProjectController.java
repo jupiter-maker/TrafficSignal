@@ -1,6 +1,7 @@
 package com.jupiter.ts.controller;
 
 import com.jupiter.ts.dto.TsResultDto;
+import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.model.Project;
 import com.jupiter.ts.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ProjectController {
     public TsResultDto getAllProject(){
         List<Project> projects = projectService.getAllProject();
         if(projects == null && projects.size()==0){
-            return TsResultDto.build(300,"没有查询到方案信息");
+            return TsResultDto.build(CustomizeErrorCode.PROJECT_NOT_FOUND);
         }
         return TsResultDto.ok(projects);
     }
@@ -38,7 +39,7 @@ public class ProjectController {
     public TsResultDto getProjectInfoById(@PathVariable("faId") Integer faId){
         Project project = projectService.getProjectInfoById(faId);
         if(project == null){
-            return TsResultDto.build(300,"没有查询到方案信息");
+            return TsResultDto.build(CustomizeErrorCode.PROJECT_NOT_FOUND);
         }
         return TsResultDto.ok(project);
     }

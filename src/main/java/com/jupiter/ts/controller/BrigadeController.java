@@ -2,6 +2,7 @@ package com.jupiter.ts.controller;
 
 import com.jupiter.ts.dto.BrigadeDto;
 import com.jupiter.ts.dto.TsResultDto;
+import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.model.Brigade;
 import com.jupiter.ts.service.BrigadeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class BrigadeController {
     @ResponseBody
     public TsResultDto getAllBrigade(){
         List<Brigade> brigades = brigadeService.getAllBrigade();
+        if(brigades == null || brigades.size() == 0){
+            return TsResultDto.build(CustomizeErrorCode.BRIGADE_NOT_FOUND);
+        }
         return TsResultDto.ok(brigades);
     }
 
