@@ -6,8 +6,10 @@
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="is_dd_name" jdbcType="VARCHAR" property="isDdName" />
         <result column="is_name" jdbcType="VARCHAR" property="isName" />
-        <result column="is_dl" jdbcType="VARCHAR" property="isDl" />
+        <result column="is_dl_name" jdbcType="VARCHAR" property="isDlName" />
         <result column="is_xh_name" jdbcType="VARCHAR" property="isXhName" />
+        <result column="is_wh_name" jdbcType="VARCHAR" property="isWhName" />
+        <result column="is_create" jdbcType="VARCHAR" property="isCreate" />
 
     </resultMap>
 
@@ -17,17 +19,42 @@
         INNER JOIN ts_xh xh ON ist.is_xh_id = xh.id
         ORDER BY ist.is_create
     </select>
+    <!--查询所有路口信息-->
     <select id="selectIntersectionListByIsName" parameterType="java.lang.String" resultMap="BaseResultMap">
-        SELECT ist.id id,dd_name is_dd_name,is_name,is_dl,xh_name is_xh_name FROM ts_is ist
+        SELECT ist.id id,dd_name is_dd_name,dl_name is_dl_name,is_name,xh_name is_xh_name,is_wh_name,is_create FROM ts_is ist
         INNER JOIN  ts_dd dd ON  ist.is_dd_id = dd.id
         INNER JOIN ts_xh xh ON ist.is_xh_id = xh.id
+        INNER JOIN ts_dl dl ON ist.is_dl_id = dl.id
         WHERE ist.is_name LIKE #{search}
-        ORDER BY ist.is_create
+        ORDER BY ist.`is_dd_id`,ist.`is_dl_id`
     </select>
-    <select id="selectIntersectionList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        SELECT ist.id id,dd_name is_dd_name,is_name,is_dl,xh_name is_xh_name FROM ts_is ist
+
+    <!--获取路口关联信息通过isId-->
+    <select id="selectIntersectionRelInfoByIsId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT ist.id id,dd_name is_dd_name,is_name,dl_name is_dl_name,xh_name is_xh_name,is_wh_name,is_create FROM ts_is ist
         INNER JOIN  ts_dd dd ON  ist.is_dd_id = dd.id
         INNER JOIN ts_xh xh ON ist.is_xh_id = xh.id
-        ORDER BY ist.is_create
+        INNER JOIN ts_dl dl ON ist.is_dl_id = dl.id
+        WHERE ist.id = #{isId};
     </select>
+
+    <select id="selectIntersectionList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT ist.id id,dd_name is_dd_name,dl_name is_dl_name,is_name,xh_name is_xh_name,is_wh_name,is_create FROM ts_is ist
+        INNER JOIN  ts_dd dd ON  ist.is_dd_id = dd.id
+        INNER JOIN ts_xh xh ON ist.is_xh_id = xh.id
+        INNER JOIN ts_dl dl ON ist.is_dl_id = dl.id
+        ORDER BY ist.`is_dd_id`,ist.`is_dl_id`
+    </select>
+
+
+    <!-- 插入信息并返回自增主键id -->
+    <insert id="insertAndGetIsId" parameterType="com.jupiter.ts.model.Intersection"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into ts_is (is_name, is_dd_id,
+        is_dl_id, is_xh_id, is_wh_name,
+        is_create, is_modified)
+        values (#{isName,jdbcType=VARCHAR}, #{isDdId,jdbcType=INTEGER},
+        #{isDlId,jdbcType=INTEGER}, #{isXhId,jdbcType=INTEGER}, #{isWhName,jdbcType=VARCHAR},
+        #{isCreate,jdbcType=BIGINT}, #{isModified,jdbcType=BIGINT})
+    </insert>
 </mapper>

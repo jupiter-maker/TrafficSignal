@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jupiter.ts.mapper.RoadExtMapper">
+    <resultMap id="BaseResultMap" type="com.jupiter.ts.dto.RoadDto">
+
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="dl_name" jdbcType="VARCHAR" property="dlName" />
+        <result column="dl_dd_name" jdbcType="VARCHAR" property="dlDdName" />
+        <result column="dl_resp" jdbcType="VARCHAR" property="dlResp" />
+        <result column="dl_resp_phone" jdbcType="VARCHAR" property="dlRespPhone" />
+        <result column="dl_desc" jdbcType="VARCHAR" property="dlDesc" />
+        <result column="dl_create" jdbcType="BIGINT" property="dlCreate" />
+    </resultMap>
+
+    <select id="selectRoadListByDlName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT dl.id id,dl_name,dd.dd_name dl_dd_name,dl_resp,dl_resp_phone,dl_desc,dl_create FROM ts_dl dl
+        INNER JOIN ts_dd dd ON dl.dl_dd_id = dd.id
+        WHERE dl_name LIKE #{search}
+        ORDER BY dl_dd_id,dl.id
+    </select>
+
+    <!--查询所有道路信息-->
+    <select id="selectRoadList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT dl.id id,dl_name,dd.dd_name dl_dd_name,dl_resp,dl_resp_phone,dl_desc,dl_create
+        FROM ts_dl dl
+        INNER JOIN ts_dd dd ON dl.dl_dd_id = dd.id
+        ORDER BY dl_dd_id,dl.id
+    </select>
+
+
+</mapper>

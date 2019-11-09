@@ -15,4 +15,8 @@ public interface IntersectionExtMapper {
     List<IntersectionDto> selectIntersectionListByIsName(@Param("search") String search);
     //根据大队id检索
     List<IntersectionDto> selectIntersectionListByDdId(@Param("search") Integer search);
+    //插入并返回对象
+    Integer insertAndGetIsId(Intersection intersection);
+    //根据isId查询路口信息
+    IntersectionDto selectIntersectionRelInfoByIsId(@Param("isId") Integer isId);
 }

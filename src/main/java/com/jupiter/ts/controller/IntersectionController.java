@@ -2,6 +2,7 @@ package com.jupiter.ts.controller;
 
 
 import com.github.pagehelper.PageInfo;
+import com.jupiter.ts.dto.IntersectionDto;
 import com.jupiter.ts.dto.TsResultDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.exception.CustomizeException;
@@ -30,7 +31,7 @@ public class IntersectionController {
      */
     @GetMapping("/{id}")
     @ResponseBody
-    public TsResultDto getIntersectionInfoById(@PathVariable("id") Integer id){
+    public TsResultDto getIntersectionByIsId(@PathVariable("id") Integer id){
         Intersection intersection = intersectionService.getIntersectionInfoById(id);
         if(intersection != null){
             return TsResultDto.ok(intersection);
@@ -51,10 +52,10 @@ public class IntersectionController {
 
     @PostMapping("/save")
     @ResponseBody
-    public TsResultDto createOrUpdateIntersection(Intersection intersection){
-        boolean result = intersectionService.createOrUpdateIntersection(intersection);
-        if(result){
-            return TsResultDto.ok();
+    public TsResultDto createIntersection(Intersection intersection){
+        int result = intersectionService.createOrUpdateIntersection(intersection);
+        if(result != 0 ){
+            return TsResultDto.ok(result);
         }
         return TsResultDto.build(CustomizeErrorCode.INTERSECTION_CREATE_OR_UPDATE_FAILED);
     }
@@ -68,7 +69,7 @@ public class IntersectionController {
     public TsResultDto getIntersectionListByIs(@RequestParam(value="pn",defaultValue="1")Integer pn,
                                            @RequestParam(value="search",required = false) String search){
         //System.out.println("/list/is"+search);
-        PageInfo pageInfo = intersectionService.getIntersectionListByIs(pn, 10, search);
+        PageInfo pageInfo = intersectionService.getIntersectionListByIsName(pn, 10, search);
         return TsResultDto.ok(pageInfo);
     }
 
@@ -110,10 +111,21 @@ public class IntersectionController {
         }
     }
 
+    //根据路口获取路口详细信息
+    @GetMapping("/relInfo/{id}")
+    @ResponseBody
+    public TsResultDto getIntersectionInfoById(@PathVariable("id") Integer isId){
+        IntersectionDto intersectionDto = intersectionService.getIntersectionRelInfoById(isId);
+        if(intersectionDto == null){
+            return TsResultDto.build(CustomizeErrorCode.INTERSECTION_NOT_FOUND);
+        }
+        return TsResultDto.ok(intersectionDto);
+    }
+
+    //跳转到路口详情页
     @RequestMapping("/info/{id}")
     public String intersectionInfo(@PathVariable("id") Integer id, Model model){
         Intersection intersection = intersectionService.getIntersectionInfoById(id);
-
         if(intersection != null){
             model.addAttribute("isInfo",intersection);
         }else{

@@ -11,18 +11,70 @@
                 <a class="navbar-brand nav-title" href="/">交通信号配时管理系统</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<!--                <ul class="nav navbar-nav">-->
+<!--                    <li th:class="${sectionId  == 'brigades'}? 'active':''">-->
+<!--                        <a href="/">大队列表</a>-->
+<!--                    </li>-->
+<!--                    <li th:class="${sectionId  == 'intersections'}? 'active':''" >-->
+<!--                        <a href="/intersections">路口管理</a>-->
+<!--                    </li>-->
+<!--                    <li th:class="${sectionId  == 'brigadeIntersection'}? 'active':''" >-->
+<!--                        <a href="/brigade/intersections">大队信息</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
                 <ul class="nav navbar-nav">
-                    <li th:class="${sectionId  == 'brigades'}? 'active':''">
-                        <a href="/">大队列表</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            方案信息管理<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">方案信息录入</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">方案信息查询</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
                     </li>
-                    <li th:class="${sectionId  == 'intersections'}? 'active':''" >
-                        <a href="/intersections">路口管理</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            路口信息管理<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/intersections/add">路口信息录入</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/intersections/edit">路口信息编辑</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/intersections/query">路口信息查询</a></li>
+                        </ul>
                     </li>
-                    <li th:class="${sectionId  == 'brigadeIntersection'}? 'active':''" >
-                        <a href="/brigade/intersections">大队信息</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            大队信息管理<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/brigades/add">大队信息录入</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/roads/add">道路信息录入</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/roads/query">大队信息查询</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            统计信息<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/statistic/brigades">大队列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/statistic/brigade/roads">大队辖区道路列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">道路对应路口数</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">参数配置路口数</a></li>
+                            <li role="separator" class="divider"></li>
+                        </ul>
                     </li>
                 </ul>
-
                 <ul class="nav navbar-nav navbar-right">
                     <li >
                         <a href="/">登录</a>

@@ -30,10 +30,6 @@ public class IntersectionService {
     @Autowired
     private IntersectionExtMapper intersectionExtMapper;
     @Autowired
-    private BrigadeMapper brigadeMapper;
-    @Autowired
-    private AnnunciatorMapper annunciatorMapper;
-    @Autowired
     private IntervalMapper intervalMapper;
 
 
@@ -43,9 +39,15 @@ public class IntersectionService {
         try{
             intersection = intersectionMapper.selectByPrimaryKey(id);
         }catch(Exception e){
-            throw new CustomizeException(CustomizeErrorCode.BRIGEDE_LIST_NOT_FOUND);
+            throw new CustomizeException(CustomizeErrorCode.INTERSECTION_NOT_FOUND);
         }
         return intersection;
+    }
+
+    //根据路口id查询路口关联信息
+    public IntersectionDto getIntersectionRelInfoById(Integer isId){
+        IntersectionDto intersectionDto = intersectionExtMapper.selectIntersectionRelInfoByIsId(isId);
+        return intersectionDto;
     }
     //校验路口名
     public boolean checkIsName(String isName){
@@ -59,25 +61,24 @@ public class IntersectionService {
     }
 
     //保存路口
-    public boolean createOrUpdateIntersection(Intersection intersection){
+    public int createOrUpdateIntersection(Intersection intersection){
         int i = 0;
         if(intersection.getId()==null){
             //添加路口
             intersection.setIsCreate(System.currentTimeMillis());
             intersection.setIsModified(System.currentTimeMillis());
-            i = intersectionMapper.insertSelective(intersection);
+            intersectionExtMapper.insertAndGetIsId(intersection);
+            //System.out.println(intersection.getId());
+            i = intersection.getId();
         }else{
-            intersection.setIsModified(System.currentTimeMillis());
+            //更新路口
             i = intersectionMapper.updateByPrimaryKeySelective(intersection);
         }
-        if(i != 0){
-            return true;
-        }
-        return false;
+        return i;
     }
 
     //根据路口名称获取路口信息分页列表
-    public PageInfo getIntersectionListByIs(Integer pn,int rows,String search){
+    public PageInfo getIntersectionListByIsName(Integer pn, int rows, String search){
 
         PageHelper.startPage(pn, rows);
         List<IntersectionDto> intersectionDtos;

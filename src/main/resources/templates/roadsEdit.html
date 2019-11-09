@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>交通信号配时管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/ts.css">
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/moment.js" type="application/javascript"></script>
+    <script src="/js/road-edit.js" type="application/javascript"></script>
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<!-- 新建道路模态框 -->
+<div class="modal fade" id="addRoadModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">添加道路</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">道路名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="dlName" class="form-control form-input"
+                                   id="dlName_add_input" placeholder="道路名称" onchange="checkDlName(this)">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属大队</label>
+                        <div class="col-sm-4">
+                            <!-- 大队提交大队id即可  -->
+                            <select class="form-control form-input-select" name="dlDdId" id="dlDd_select" onchange="change_dd_id(this);">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">负责人</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="dlResp" class="form-control form-input"
+                                   id="dlResp_add_input" placeholder="负责人" >
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">联系方式</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="dlRespPhone" class="form-control form-input"
+                                   id="dlRespPhone_add_input" placeholder="联系方式">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">地址范围</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="dlDesc" class="form-control form-input"
+                                   id="dlDesc_add_input" placeholder="地址范围">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="dl_save_btn" onclick="addRoad(this);">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 更新道路模态框 -->
+<div class="modal fade" id="updateRoadModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" >修改道路</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">道路名称</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" name="id" id="dl_update_id">
+                            <p class="form-control-static" id="dlName_update_static"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属大队</label>
+                        <div class="col-sm-4">
+                            <!-- 大队提交大队id即可  -->
+                            <select class="form-control form-input-select" name="dlDdId" id="dlDd_update_select" onchange="change_dd_id(this);">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">负责人</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="dlResp" class="form-control form-input"
+                                   id="dlResp_update_input" placeholder="负责人" >
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">联系方式</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="dlRespPhone" class="form-control form-input"
+                                   id="dlRespPhone_update_input" placeholder="联系方式">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">地址范围</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="dlDesc" class="form-control form-input"
+                                   id="dlDesc_update_input" placeholder="地址范围">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="dl_update_btn" onclick="updateRoad(this);">更新</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 路口资料页列表-->
+<div class="container-fluid">
+    <!--标题行  -->
+    <div class="row">
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3 th:text="${sectionName }"></h3>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <form class="navbar-form navbar-left is-search">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="dl_name_search" placeholder="搜索道路">
+                </div>
+                <button type="button" class="btn btn-default" onclick="change_dl_search();">搜索</button>
+            </form>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <hr>
+        </div>
+        <div class="col-md-12 col-md-offset-10">
+            <button type="button" class="btn btn-success" id="dd_create" onclick="open_dl_add_modal();">增加道路</button>
+            <button type="button" class="btn btn-danger" id="dl_delete_checked" onclick="delete_checked_all();">批量删除</button>
+        </div>
+    </div>
+    <!-- 显示表格数据 -->
+    <div class="row">
+        <div class="col-md-12" id="dl_table">
+            <table class="table table-striped" >
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="check_all" onclick="check_all(this)">
+                    </th>
+                    <th>#</th>
+                    <th>道路名</th>
+                    <th>所属大队</th>
+                    <th>负责人</th>
+                    <th>联系方式</th>
+                    <th>地址范围</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 显示分页信息 -->
+    <div class="row">
+        <!-- 分页信息 -->
+        <div class="col-md-6" id="page_info_area"></div>
+        <!-- 分页条信息 -->
+        <!-- 分页条信息 -->
+        <div class="col-md-6" id="page_nav_area"></div>
+
+    </div>
+</div>
+
+</body>
+</html>
