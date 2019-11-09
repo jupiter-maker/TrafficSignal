@@ -31,23 +31,26 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <!-- 路口表 -->
-        <table schema="" tableName="ts_is" domainObjectName="Intersection" >
-        </table>
-        <!-- 大队表 -->
-        <table schema="" tableName="ts_dd" domainObjectName="Brigade" >
-        </table>
-        <!--信号机型号表 -->
-        <table schema="" tableName="ts_xh" domainObjectName="Annunciator" >
-        </table>
-        <!--  方案表 -->
-        <table schema="" tableName="ts_fa" domainObjectName="Project" >
-        </table>
-        <!-- 时段表 -->
-        <table schema="" tableName="ts_sd" domainObjectName="Interval" >
-        </table>
-        <!-- 道路表 -->
-        <table schema="" tableName="ts_dl" domainObjectName="Road" >
+<!--        &lt;!&ndash; 路口表 &ndash;&gt;-->
+<!--        <table schema="" tableName="ts_is" domainObjectName="Intersection" >-->
+<!--        </table>-->
+<!--        &lt;!&ndash; 大队表 &ndash;&gt;-->
+<!--        <table schema="" tableName="ts_dd" domainObjectName="Brigade" >-->
+<!--        </table>-->
+<!--        &lt;!&ndash;信号机型号表 &ndash;&gt;-->
+<!--        <table schema="" tableName="ts_xh" domainObjectName="Annunciator" >-->
+<!--        </table>-->
+<!--        &lt;!&ndash;  方案表 &ndash;&gt;-->
+<!--        <table schema="" tableName="ts_fa" domainObjectName="Project" >-->
+<!--        </table>-->
+<!--        &lt;!&ndash; 时段表 &ndash;&gt;-->
+<!--        <table schema="" tableName="ts_sd" domainObjectName="Interval" >-->
+<!--        </table>-->
+<!--        &lt;!&ndash; 道路表 &ndash;&gt;-->
+<!--        <table schema="" tableName="ts_dl" domainObjectName="Road" >-->
+<!--        </table>-->
+        <!-- 相位表 -->
+        <table schema="" tableName="ts_xw" domainObjectName="Phase" >
         </table>
 
 

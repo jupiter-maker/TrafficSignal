@@ -20,7 +20,12 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     BRIGADE_CREATE_OR_UPDATE_FAILED(2017,"大队创建或更新失败！"),
     BRIGADE_DELETE_FAILED(2018,"大队删除失败！"),
     ROAD_NAME_REPETITION(2019,"道路名称重复！"),
-    ROAD_CREATE_OR_UPDATE_FAILED(2020,"道路创建失败！")
+    ROAD_CREATE_OR_UPDATE_FAILED(2020,"道路创建失败！"),
+    PROJECT_CREATE_OR_UPDATE_FAILED(2021,"方案创建失败！"),
+    PHASE_NOT_FOUND(2022,"相位信息为查询到！"),
+    PHASE_CREATE_FAILED(2023,"相位创建失败!"),
+    PHASE_DELETE_FAILED(2024,"相位删除失败！"),
+    ZXW_SET_FAILED(2025,"主相位设置失败！")
     ;
 
     private Integer status;

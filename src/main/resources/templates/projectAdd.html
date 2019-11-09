@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>交通信号配时管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/ts.css">
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/moment.js" type="application/javascript"></script>
+    <script src="/js/fa-add.js" type="application/javascript"></script>
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+
+<!-- 方案信息录入页面  -->
+<div class="container-fluid">
+    <!--标题行  -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3 th:text="${sectionName }"></h3>
+            <hr>
+        </div>
+    </div>
+    <!--方案添加表格-->
+    <div class="row" id="fa_add_table">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="faName_add_input" class="col-sm-2 control-label">方案号</label>
+                    <div class="col-sm-10">
+                        <input type="hidden" id="fa_id" name="id">
+                        <input type="text" class="form-control" name="faName" id="faName_add_input" placeholder="方案号x(x-x-x-x)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="faMethod_add_input" class="col-sm-2 control-label">控制方式</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="faMethod" id="faMethod_add_input" placeholder="控制方式">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="faXwc_add_input" class="col-sm-2 control-label">相位差</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="faXwc" id="faXwc_add_input" placeholder="相位差(s)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="faZqcd_add_input" class="col-sm-2 control-label">周期长度</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="faZqcd" id="faZqcd_add_input" placeholder="周期长度(s)">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <button type="button" class="btn btn-success" onclick="project_create_or_update();">保存方案</button>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <hr>
+        </div>
+    </div>
+
+    <!--方案信息回显块-->
+    <div class="row" id="fa_info_table">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="faName_info_static" class="col-sm-2 control-label">方案号</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" style="color: green;" id="faName_info_static"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="faMethod_info_static" class="col-sm-2 control-label">控制方式</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" id="faMethod_info_static"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="faXwc_info_static" class="col-sm-2 control-label">相位差</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" id="faXwc_info_static"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="faZqcd_info_static" class="col-sm-2 control-label">周期长度</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" id="faZqcd_info_static"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="faCreate_info_static" class="col-sm-2 control-label">创建时间</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" id="faCreate_info_static"></p>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <button type="button" class="btn btn-danger" onclick="open_fa_update_table();">编辑方案</button><br>
+            <hr>
+            <button type="button" class="btn btn-info" onclick="add_phase_modal();">添加相位</button>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <hr>
+        </div>
+    </div>
+    <!-- 时段信息框 -->
+    <div class="row">
+        <table class="table table-bordered" id="fa_phase_table">
+            <thead>
+            <tr>
+                <th style="color:#2aabd2">相位号</th>
+                <th style="color:#2aabd2">相位</th>
+                <th style="color:#2aabd2">绿灯</th>
+                <th style="color:#2aabd2">黄灯</th>
+                <th style="color:#2aabd2">红灯</th>
+                <th style="color:#2aabd2">机动车绿闪</th>
+                <th style="color:#2aabd2">机动车红闪</th>
+                <th style="color:#2aabd2">行人绿闪</th>
+                <th style="color:#2aabd2">行人红闪</th>
+                <th style="color:#2aabd2">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+<!--            <tr class="add-fa-xw-tr">-->
+<!--                <td width="5%">0</td>-->
+<!--                <td width="18%">-->
+<!--                    <div class="input-group">-->
+<!--                        <span class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+<!--                        </span>-->
+<!--                        <input type="text" id="xwName"  class="form-control" placeholder="(s)" aria-describedby="basic-addon1">-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td width="10%">-->
+<!--                    <div class="input-group">-->
+<!--                        <span class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+<!--                        </span>-->
+<!--                        <input type="text" id="xwGreen" class="form-control" placeholder="(s)" aria-describedby="basic-addon1">-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td width="10%">-->
+<!--                    <div class="input-group">-->
+<!--                        <span class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+<!--                        </span>-->
+<!--                        <input type="text" id="xwYellow" class="form-control" placeholder="(s)" aria-describedby="basic-addon1">-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td width="10%">-->
+<!--                    <div class="input-group">-->
+<!--                        <span class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+<!--                        </span>-->
+<!--                        <input type="text" id="xwRed" class="form-control" placeholder="(s)" aria-describedby="basic-addon1">-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td width="10%">-->
+<!--                    <div class="input-group">-->
+<!--                        <span class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+<!--                        </span>-->
+<!--                        <input type="text" id="xwVehicleGreen" class="form-control" placeholder="(s)" aria-describedby="basic-addon1">-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td width="10%">-->
+<!--                    <div class="input-group">-->
+<!--                        <span class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+<!--                        </span>-->
+<!--                        <input type="text" id="xwVehicleRed" class="form-control" placeholder="(s)" aria-describedby="basic-addon1">-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td width="10%">-->
+<!--                    <div class="input-group">-->
+<!--                        <span class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+<!--                        </span>-->
+<!--                        <input type="text" id="xwWalkerGreen" class="form-control" placeholder="(s)" aria-describedby="basic-addon1">-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td width="10%">-->
+<!--                    <div class="input-group">-->
+<!--                        <span class="input-group-addon">-->
+<!--                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+<!--                        </span>-->
+<!--                        <input type="text" id="xwWalkerRed" class="form-control" placeholder="(s)" aria-describedby="basic-addon1">-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td width="7%">-->
+<!--                        <button type='button' class="btn btn-primary" onclick='add_is_interval(this);'>-->
+<!--                            <span class="glyphicon glyphicon-ok"></span>-->
+<!--                        </button>-->
+<!--                        <button type='button' class="btn btn-danger" onclick='add_is_interval(this);'>-->
+<!--                            <span class="glyphicon glyphicon-remove"></span>-->
+<!--                        </button>-->
+<!--                </td>-->
+<!--            </tr>-->
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

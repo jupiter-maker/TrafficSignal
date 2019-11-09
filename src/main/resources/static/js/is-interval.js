@@ -102,7 +102,7 @@ function is_sd_fa_info(e){
                 //显示详细方案信息在指定列val()
                 //alert(result.data.faMethod+"**"+result.data.faZxw);
                 $(e).parents("tr").find("td:eq(4)").html(result.data.faMethod);
-                $(e).parents("tr").find("td:eq(5)").html(result.data.faZxw);
+                $(e).parents("tr").find("td:eq(5)").html(result.data.faZxwName);
 
             }else{
                 alert(result.msg);

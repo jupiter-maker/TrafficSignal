@@ -107,4 +107,14 @@ public class PageController {
         model.addAttribute("sectionName", "道路信息查询");
         return "roadsQuery";
     }
+
+    /**
+     * 方案添加页面
+     */
+    @GetMapping("/projects/add")
+    public String projectAdd(Model model){
+        model.addAttribute("sectionId", "projectAdd");
+        model.addAttribute("sectionName", "方案信息录入");
+        return "projectAdd";
+    }
 }

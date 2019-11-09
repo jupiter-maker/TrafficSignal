@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jupiter.ts.mapper.ProjectExtMapper">
+    <resultMap id="BaseResultMap" type="com.jupiter.ts.model.Project">
+
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="fa_name" jdbcType="VARCHAR" property="faName"/>
+        <result column="fa_method" jdbcType="VARCHAR" property="faMethod"/>
+        <result column="fa_zxw" jdbcType="INTEGER" property="faZxw"/>
+        <result column="fa_create" jdbcType="BIGINT" property="faCreate"/>
+        <result column="fa_modified" jdbcType="BIGINT" property="faModified"/>
+        <result column="fa_xwc" jdbcType="INTEGER" property="faXwc"/>
+        <result column="fa_zqcd" jdbcType="INTEGER" property="faZqcd"/>
+    </resultMap>
+
+    <!-- 插入方案信息并返回自增主键id -->
+    <insert id="insertAndGetProjectId" parameterType="com.jupiter.ts.model.Project"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into ts_fa (fa_name, fa_method,
+        fa_zxw, fa_create, fa_modified,
+        fa_xwc, fa_zqcd)
+        values (#{faName,jdbcType=VARCHAR}, #{faMethod,jdbcType=VARCHAR},
+        #{faZxw,jdbcType=INTEGER}, #{faCreate,jdbcType=BIGINT}, #{faModified,jdbcType=BIGINT},
+        #{faXwc,jdbcType=INTEGER}, #{faZqcd,jdbcType=INTEGER})
+    </insert>
+</mapper>

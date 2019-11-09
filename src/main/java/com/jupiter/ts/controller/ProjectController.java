@@ -6,10 +6,7 @@ import com.jupiter.ts.model.Project;
 import com.jupiter.ts.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,5 +39,27 @@ public class ProjectController {
             return TsResultDto.build(CustomizeErrorCode.PROJECT_NOT_FOUND);
         }
         return TsResultDto.ok(project);
+    }
+
+    //更新或保存方案id
+    @PostMapping("/save")
+    @ResponseBody
+    public TsResultDto createOrUpdateProject(Project project){
+        Project result = projectService.createOrUpdateProject(project);
+        if(result.getId() == null){
+            return TsResultDto.build(CustomizeErrorCode.PROJECT_CREATE_OR_UPDATE_FAILED);
+        }
+        return TsResultDto.ok(result);
+    }
+
+    //给方案设置主相位
+    @PostMapping("/setZxw")
+    @ResponseBody
+    public TsResultDto setZxw(@RequestParam("faId") Integer faId,@RequestParam("faZxwId") Integer faZxwId){
+        int result = projectService.setZxw(faId,faZxwId);
+        if(result != 0){
+            return TsResultDto.ok();
+        }
+        return TsResultDto.build(CustomizeErrorCode.ZXW_SET_FAILED);
     }
 }
