@@ -117,4 +117,13 @@ public class PageController {
         model.addAttribute("sectionName", "方案信息录入");
         return "projectAdd";
     }
+    /**
+     * 方案查询页面
+     */
+    @GetMapping("/projects/query")
+    public String projectQuery(Model model){
+        model.addAttribute("sectionId", "queryProjects");
+        model.addAttribute("sectionName", "方案信息查询");
+        return "projectsQuery";
+    }
 }

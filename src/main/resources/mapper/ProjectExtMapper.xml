@@ -13,6 +13,21 @@
         <result column="fa_zqcd" jdbcType="INTEGER" property="faZqcd"/>
     </resultMap>
 
+    <!--查询所有方案信息通过方案名搜索-->
+    <select id="getProjectsListByFaName" parameterType="java.lang.String" resultType="com.jupiter.ts.dto.ProjectDto">
+        SELECT fa.id,fa_name,fa_method,COUNT(*) xw_num,fa_zxw_name,fa_xwc,fa_zqcd
+        FROM ts_fa fa
+        INNER JOIN ts_xw xw ON fa.id=xw.xw_fa_id
+        WHERE fa_name LIKE #{search}
+        GROUP BY fa.id
+    </select>
+    <!--查询所有方案信息-->
+    <select id="getProjectsList" resultType="com.jupiter.ts.dto.ProjectDto">
+        SELECT fa.id,fa_name,fa_method,COUNT(*) xw_num,fa_zxw_name,fa_xwc,fa_zqcd
+        FROM ts_fa fa
+        INNER JOIN ts_xw xw ON fa.id=xw.xw_fa_id
+        GROUP BY fa.id
+    </select>
     <!-- 插入方案信息并返回自增主键id -->
     <insert id="insertAndGetProjectId" parameterType="com.jupiter.ts.model.Project"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">

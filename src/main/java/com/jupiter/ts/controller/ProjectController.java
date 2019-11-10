@@ -1,5 +1,6 @@
 package com.jupiter.ts.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.jupiter.ts.dto.TsResultDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.model.Project;
@@ -61,5 +62,13 @@ public class ProjectController {
             return TsResultDto.ok();
         }
         return TsResultDto.build(CustomizeErrorCode.ZXW_SET_FAILED);
+    }
+
+    @PostMapping("/list")
+    @ResponseBody
+    public TsResultDto getProjectsListByFaName(@RequestParam(value="pn",defaultValue="1")Integer pn,
+                                               @RequestParam(value="search",required = false) String search){
+        PageInfo pageInfo= projectService.getProjectsListByFaName(pn, 10, search);
+        return TsResultDto.ok(pageInfo);
     }
 }

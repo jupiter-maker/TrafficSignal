@@ -1,11 +1,18 @@
 package com.jupiter.ts.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.jupiter.ts.dto.IntersectionDto;
+import com.jupiter.ts.dto.ProjectDto;
+import com.jupiter.ts.exception.CustomizeErrorCode;
+import com.jupiter.ts.exception.CustomizeException;
 import com.jupiter.ts.mapper.PhaseMapper;
 import com.jupiter.ts.mapper.ProjectExtMapper;
 import com.jupiter.ts.mapper.ProjectMapper;
 import com.jupiter.ts.model.Phase;
 import com.jupiter.ts.model.Project;
 import com.jupiter.ts.model.ProjectExample;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +70,24 @@ public class ProjectService {
         }
         int i = projectMapper.updateByPrimaryKeySelective(project);
         return i;
+    }
+
+    //分页检索
+    public PageInfo getProjectsListByFaName(Integer pn, int rows, String search) {
+        PageHelper.startPage(pn,rows);
+        List<ProjectDto> projectDtos;
+        try{
+            if(StringUtils.isNotBlank(search)){
+                //搜索框不为空
+                projectDtos = projectExtMapper.getProjectsListByFaName("%"+search+"%");
+            }else{
+                projectDtos = projectExtMapper.getProjectsList();
+            }
+        }catch(Exception e){
+            throw new CustomizeException(CustomizeErrorCode.PROJECT_NOT_FOUND);
+        }
+        PageInfo page = new PageInfo(projectDtos,rows);
+        return page;
     }
 }
 
