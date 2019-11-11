@@ -3,12 +3,10 @@ package com.jupiter.ts.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jupiter.ts.dto.RoadDto;
+import com.jupiter.ts.dto.RoadStsDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.exception.CustomizeException;
-import com.jupiter.ts.mapper.IntersectionMapper;
-import com.jupiter.ts.mapper.IntervalMapper;
-import com.jupiter.ts.mapper.RoadExtMapper;
-import com.jupiter.ts.mapper.RoadMapper;
+import com.jupiter.ts.mapper.*;
 import com.jupiter.ts.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,8 @@ public class RoadService {
     private IntersectionMapper intersectionMapper;
     @Autowired
     private IntervalMapper intervalMapper;
+    @Autowired
+    private BrigadeMapper brigadeMapper;
 
     //根据大队id查询对应的道路
     public List<Road> getRoadListByDdId(Integer ddId){
@@ -155,5 +155,26 @@ public class RoadService {
         }
         return false;
 
+    }
+
+    //获取道路统计信息
+    public List<RoadStsDto> selectRoadsSts() {
+        List<RoadStsDto> roadStsDtos = roadExtMapper.selectRoadsSts();
+        IntersectionExample intersectionExample;
+        for(RoadStsDto r:roadStsDtos){
+            //校正路口数
+            if(r.getIsNum() == 1){
+                intersectionExample = new IntersectionExample();
+                intersectionExample.createCriteria().andIsDlIdEqualTo(r.getDlId());
+                List<Intersection> intersections = intersectionMapper.selectByExample(intersectionExample);
+                if(intersections == null || intersections.size() == 0){
+                    r.setIsNum(0);
+                }
+            }
+            //补全大队名称
+            Brigade brigade = brigadeMapper.selectByPrimaryKey(r.getDdId());
+            r.setDdName(brigade.getDdName());
+        }
+        return roadStsDtos;
     }
 }

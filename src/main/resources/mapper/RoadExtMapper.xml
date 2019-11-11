@@ -27,5 +27,12 @@
         ORDER BY dl_dd_id,dl.id
     </select>
 
-
+    <!--查询道路统计信息-->
+    <select id="selectRoadsSts" parameterType="java.lang.Integer" resultType="com.jupiter.ts.dto.RoadStsDto">
+        SELECT dl.id dl_id,dl_dd_id dd_id,dl_name,COUNT(*) is_num
+        FROM ts_dl dl LEFT JOIN ts_is ist
+        ON dl.id = ist.is_dl_id
+        GROUP BY dl.id
+        ORDER BY dd_id
+    </select>
 </mapper>

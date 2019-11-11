@@ -1,6 +1,7 @@
 package com.jupiter.ts.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.jupiter.ts.dto.RoadStsDto;
 import com.jupiter.ts.dto.TsResultDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.model.Road;
@@ -93,5 +94,12 @@ public class RoadController {
                 return TsResultDto.build(CustomizeErrorCode.INTERSECTION_SINGLE_DELETE_FAILED);
             }
         }
+    }
+
+    @GetMapping("/sts")
+    @ResponseBody
+    public TsResultDto getRoadsSts(){
+        List<RoadStsDto> roadStsDtos =  roadService.selectRoadsSts();
+        return TsResultDto.ok(roadStsDtos);
     }
 }

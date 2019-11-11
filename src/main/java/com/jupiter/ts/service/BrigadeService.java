@@ -1,6 +1,7 @@
 package com.jupiter.ts.service;
 
 import com.jupiter.ts.dto.BrigadeDto;
+import com.jupiter.ts.dto.BrigadeStsDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.exception.CustomizeException;
 import com.jupiter.ts.mapper.*;
@@ -132,5 +133,38 @@ public class BrigadeService {
             return true;
         }
         return false;
+    }
+
+    //返回大队统计信息
+    public List<BrigadeStsDto> selectBrigadeSts() {
+        List<BrigadeStsDto> brigadeStsDtos = brigadeExtMapper.selectBrigadeSts();
+        RoadExample roadExample;
+        IntersectionExample intersectionExample;
+        try{
+            for(BrigadeStsDto b:brigadeStsDtos){
+                //校正道路数
+                if(b.getDlNum() == 1){
+                    //道路数可能为0
+                    roadExample = new RoadExample();
+                    roadExample.createCriteria().andDlDdIdEqualTo(b.getDdId());
+                    List<Road> roads = roadMapper.selectByExample(roadExample);
+                    if(roads == null || roads.size() == 0){
+                        b.setDlNum(0);
+                    }
+                }
+                //校正路口数
+                intersectionExample = new IntersectionExample();
+                intersectionExample.createCriteria().andIsDdIdEqualTo(b.getDdId());
+                List<Intersection> intersections = intersectionMapper.selectByExample(intersectionExample);
+                if(intersections == null || intersections.size() == 0){
+                    b.setIsNum(0);
+                }else{
+                    b.setIsNum(intersections.size());
+                }
+            }
+        }catch(Exception e){
+            throw new CustomizeException(CustomizeErrorCode.BRIGADE_STS_FAILED);
+        }
+        return brigadeStsDtos;
     }
 }

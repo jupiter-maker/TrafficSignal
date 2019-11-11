@@ -11,7 +11,7 @@ $(function () {
 });
 function init_brigade_page(){
     $.ajax({
-        url: "/brigade/list",
+        url: "/brigade/list/sts",
         type: "GET",
         success: function (result) {
             //alert(result.msg);

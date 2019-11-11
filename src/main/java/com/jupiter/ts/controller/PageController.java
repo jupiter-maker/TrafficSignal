@@ -135,4 +135,16 @@ public class PageController {
         model.addAttribute("sectionName", "大队信息统计");
         return "brigadesSts";
     }
+    @GetMapping("/roads/sts")
+    public String roadsSts(Model model){
+        model.addAttribute("sectionId", "roadsSts");
+        model.addAttribute("sectionName", "道路-路口-信息统计");
+        return "roadsSts";
+    }
+    @GetMapping("/intersections/sts")
+    public String intersectionsSts(Model model){
+        model.addAttribute("sectionId", "intersectionsSts");
+        model.addAttribute("sectionName", "路口-信息统计");
+        return "intersectionsSts";
+    }
 }

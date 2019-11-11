@@ -1,6 +1,7 @@
 package com.jupiter.ts.controller;
 
 import com.jupiter.ts.dto.BrigadeDto;
+import com.jupiter.ts.dto.BrigadeStsDto;
 import com.jupiter.ts.dto.TsResultDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.model.Brigade;
@@ -65,19 +66,7 @@ public class BrigadeController {
         }
         return TsResultDto.build(CustomizeErrorCode.BRIGADE_CREATE_OR_UPDATE_FAILED);
     }
-    /**
-     * 返回大队统计信息
-     * @return
-     */
-    @GetMapping("/list")
-    @ResponseBody
-    public TsResultDto getBrigadeList(){
-        List<BrigadeDto> brigadeList = brigadeService.getBrigadeList();
-        if(brigadeList == null || brigadeList.size() == 0 ){
-            return TsResultDto.build(300,"查询大队列表信息失败");
-        }
-        return TsResultDto.ok(brigadeList);
-    }
+
 
     @PostMapping("/checkDdName")
     @ResponseBody
@@ -95,5 +84,26 @@ public class BrigadeController {
         model.addAttribute("sectionId","brigadeIntersection");
         model.addAttribute("sectionName","大队-路口信息统计");
         return "intersectionsEdit";
+    }
+
+    /**
+     * 大队-道路 大队-路口 统计信息
+     * @return
+     */
+    @GetMapping("/sts")
+    @ResponseBody
+    public TsResultDto getBrigadesSts(){
+        List<BrigadeStsDto> result = brigadeService.selectBrigadeSts();
+        return TsResultDto.ok(result);
+    }
+    /**
+     * 返回大队-路口详细统计 信息
+     * @return
+     */
+    @GetMapping("/list/sts")
+    @ResponseBody
+    public TsResultDto getBrigadeList(){
+        List<BrigadeDto> brigadeList = brigadeService.getBrigadeList();
+        return TsResultDto.ok(brigadeList);
     }
 }

@@ -26,10 +26,11 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     PHASE_CREATE_FAILED(2023,"相位创建失败!"),
     PHASE_DELETE_FAILED(2024,"相位删除失败！"),
     ZXW_SET_FAILED(2025,"主相位设置失败！"),
-    PROJECT_DELETE_FAILED(2026,"方案删除失败！")
+    PROJECT_DELETE_FAILED(2026,"方案删除失败！"),
+    BRIGADE_STS_FAILED(2027,"大队统计失败！")
     ;
 
-    private Integer status;
+   private Integer status;
     private String msg;
 
     CustomizeErrorCode(Integer status, String msg) {

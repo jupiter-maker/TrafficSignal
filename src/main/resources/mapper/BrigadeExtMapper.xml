@@ -7,13 +7,7 @@
         <result column="dd_name" jdbcType="VARCHAR" property="ddName"/>
         <result column="is_num" jdbcType="INTEGER" property="isNum"/>
     </resultMap>
-<!--    <resultMap id="BrigadeStsMap" type="com.jupiter.ts.model.BrigadeSts">-->
 
-<!--        <id column="id" jdbcType="INTEGER" property="ddId"/>-->
-<!--        <result column="dd_name" jdbcType="VARCHAR" property="ddName"/>-->
-<!--        <result column="dl_name" jdbcType="VARCHAR" property="dlName"/>-->
-<!--        <result column="dl_id" jdbcType="INTEGER" property="dlId"/>-->
-<!--    </resultMap>-->
 
     <select id="selectBrigadeList" resultMap="BaseResultMap">
        SELECT dd.id id,dd.dd_name,COUNT(*) is_num
@@ -23,12 +17,13 @@
        GROUP BY dd.id
     </select>
 
-<!--    <select id="selectBrigadeSts" parameterType="java.lang.Integer" resultMap="BrigadeStsMap">-->
-<!--       SELECT dd.id id,dd.dd_name,dl_name,dl.id dl_id-->
-<!--       FROM ts_dd dd-->
-<!--       INNER JOIN ts_dl dl ON dd.id = dl.dl_dd_id-->
-<!--       WHERE dd.id = #{ddId}-->
-<!--    </select>-->
+    <!-- 大队-道路统计信息 -->
+     <select id="selectBrigadeSts" resultType="com.jupiter.ts.dto.BrigadeStsDto">
+       SELECT dd.id dd_id,dd_name,COUNT(*) dl_num
+       FROM ts_dd dd LEFT JOIN ts_dl dl
+       ON dl.dl_dd_id = dd.id
+       GROUP BY dd.id
+    </select>
 
 
 
