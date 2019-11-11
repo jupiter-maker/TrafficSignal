@@ -6,15 +6,15 @@ import com.jupiter.ts.dto.IntersectionDto;
 import com.jupiter.ts.dto.ProjectDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.exception.CustomizeException;
+import com.jupiter.ts.mapper.IntervalMapper;
 import com.jupiter.ts.mapper.PhaseMapper;
 import com.jupiter.ts.mapper.ProjectExtMapper;
 import com.jupiter.ts.mapper.ProjectMapper;
-import com.jupiter.ts.model.Phase;
-import com.jupiter.ts.model.Project;
-import com.jupiter.ts.model.ProjectExample;
+import com.jupiter.ts.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +30,8 @@ public class ProjectService {
     private ProjectExtMapper projectExtMapper;
     @Autowired
     private PhaseMapper phaseMapper;
+    @Autowired
+    private IntervalMapper intervalMapper;
 
     //获取所有方方案信息
     public List<Project> getAllProject(){
@@ -88,6 +90,28 @@ public class ProjectService {
         }
         PageInfo page = new PageInfo(projectDtos,rows);
         return page;
+    }
+
+    //根据方案id删除方案
+    @Transactional
+    public int deleteProjectById(Integer id) {
+        int i;
+        try{
+           //删除属于该相位的方案
+           PhaseExample phaseExample = new PhaseExample();
+           phaseExample.createCriteria().andXwFaIdEqualTo(id);
+           phaseMapper.deleteByExample(phaseExample);
+           //删除属于该方案的时段
+           IntervalExample intervalExample = new IntervalExample();
+           intervalExample.createCriteria().andSdFaIdEqualTo(id);
+           intervalMapper.deleteByExample(intervalExample);
+           //删除方案
+           i = projectMapper.deleteByPrimaryKey(id);
+
+       }catch(Exception e){
+           throw new CustomizeException(CustomizeErrorCode.PROJECT_DELETE_FAILED);
+       }
+        return i;
     }
 }
 

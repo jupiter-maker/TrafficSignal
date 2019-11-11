@@ -40,14 +40,19 @@ function build_is_interval_table(result) {
     $("#is_interval_table tbody").empty();
     var intervals = result.data;
     $.each(intervals, function (index, item) {
-        var signTd = $("<td style='width:5%;'><span class='glyphicon glyphicon-time' aria-hidden='true'></span></td>");
+        var signSpan = $("<span class='glyphicon glyphicon-chevron-right' onclick='change_sign_state(this)' aria-hidden='true'></span>");
+        signSpan.attr("fa_id",item.faId);
+        signSpan.attr("sd_id",item.id);
+        var signTd = $("<td style='width:5%;'></td>").append(signSpan);
+
         var sdNameTd = $("<td style='width:5%;'></td>").append(
             $("<span style='color:#2aabd2'></span>").html("时间段"+index)
         );
         var sdTd = $("<td style='width:18%;'></td>").html(item.sdStart+" - "+item.sdEnd);
-        var sdFaTd = $("<td style='width:15%;'></td>").html(item.faName);
+        var sdFaNameLink = $("<a></a>").append(item.faName).attr("href","/project/info/"+item.faId);
+        var sdFaTd = $("<td style='width:15%;'></td>").html(sdFaNameLink);
         var sdFaMethodTd = $("<td style='width:15%;'></td>").html(item.faMethod);
-        var sdZxw = $("<td style='width:24%;'></td>").html(item.faZxw);
+        var sdZxwNameTd = $("<td style='width:24%;'></td>").html(item.faZxwName);
         //为编辑按钮添加自定义属性，id值
         // var editBtn = $("<a onclick='update_interval(this);'></a>").append(
         //     $("<span></span>").addClass("glyphicon glyphicon-pencil").attr("aria-hidden","true").append("编辑")
@@ -60,9 +65,14 @@ function build_is_interval_table(result) {
         // var btnTd = $("<td style='width:18%;'></td>").append(editBtn).append(" ").append(
         //     delBtn);
         var btnTd = $("<td style='width:18%;'></td>").append(delBtn);
+        var infoDiv = $("<div class='collapse sd-fa-info'>\n" +
+            "    \n" +
+            "</div>").attr("id","sd_fa__info_collapse_"+item.id);
+        var infoTd = $("<td colspan='7'></tdcolspan>").append(infoDiv);
         //append方法执行完后返回原来的元素
         $("<tr class='sd-tr'></tr>").append(signTd).append(sdNameTd).append(sdTd).append(
-            sdFaTd).append(sdFaMethodTd).append(sdZxw).append(btnTd).appendTo("#is_interval_table tbody");
+            sdFaTd).append(sdFaMethodTd).append(sdZxwNameTd).append(btnTd).appendTo("#is_interval_table tbody");
+        $("<tr style=\"display:none\" ></tr>").append(infoTd).appendTo("#is_interval_table tbody");
     });
 }
 //将方案信息显示在下拉列表
@@ -240,4 +250,71 @@ function add_interval_modal(){
     //$("#is_interval_table tbody").append(addSdForm);
     getProjtects("#is_sd_fa_select");
     //alert("添加完成");
+}
+function change_sign_state(e){
+    if($(e).attr("class") == "glyphicon glyphicon-chevron-right"){
+        //详情页合并状态,打开详情页
+        $(e).attr("class","glyphicon glyphicon-chevron-down");
+        set_sd_fa_info($(e).attr("sd_id"),$(e).attr("fa_id"));
+        $(e).parents("tr").next().removeAttr('style');
+        $('#sd_fa__info_collapse_'+$(e).attr("sd_id")).collapse('show');
+    }else if($(e).attr("class") == "glyphicon glyphicon-chevron-down"){
+        //详情页开启状态，关闭详情页
+        $(e).attr("class","glyphicon glyphicon-chevron-right");
+        $(e).parents("tr").next().attr('style',"display:none");
+        $('#sd_fa__info_collapse_'+$(e).attr("sd_id")).collapse('hide');
+    }
+}
+
+//给相应的时段相位详情div填充内容
+function set_sd_fa_info(sdId,faId){
+    $.ajax({
+        url: "/phase/list",
+        type: "GET",
+        data: "faId=" + faId,
+        success: function (result) {
+            if (result.status == 200) {
+                //解析并显示方案相位数据
+                build_sd_fa_xw_table(sdId,result);
+            }
+
+        }
+    });
+}
+//解析显示相位信息
+function build_sd_fa_xw_table(sdId,result) {
+
+    //清空该时段对应info相位内容
+    $("#sd_fa__info_collapse_"+sdId).empty();
+    var tbody = $("<tbody></tbody>")
+    var phases = result.data;
+    $.each(phases, function (index, item) {
+        var xwNameTd = $("<td ></td>").html(item.xwName);
+        var xwGreenTd = $("<td ></td>").html(item.xwGreen);
+        var xwYellowTd = $("<td ></td>").html(item.xwYellow);
+        var xwRedTd = $("<td ></td>").html(item.xwRed);
+        var xwVeGreenTd = $("<td ></td>").html(item.xwVehicleGreen);
+        var xwVeRedTd = $("<td ></td>").html(item.xwVehicleRed);
+        var xwWaGreenTd = $("<td ></td>").html(item.xwWalkerGreen);
+        var xwWaRedTd = $("<td ></td>").html(item.xwWalkerRed);
+        $("<tr></tr>").append(xwNameTd).append(xwGreenTd).append(
+            xwYellowTd).append(xwRedTd).append(xwVeGreenTd).append(xwVeRedTd)
+            .append(xwWaGreenTd).append(xwWaRedTd).appendTo(tbody);
+    });
+    //将该tbody添加到table中
+    $("<table class=\"table table-bordered\">\n" +
+        "        <thead>\n" +
+        "        <tr>\n" +
+        "            <th>相位</th>\n" +
+        "            <th>绿灯</th>\n" +
+        "            <th>黄灯</th>\n" +
+        "            <th>红灯</th>\n" +
+        "            <th>机动车绿闪</th>\n" +
+        "            <th>机动车红闪</th>\n" +
+        "            <th>行人绿闪</th>\n" +
+        "            <th>行人红闪</th>\n" +
+        "        </tr>\n" +
+        "        </thead>\n" +
+        "\n" +
+        "    </table>").append(tbody).appendTo("#sd_fa__info_collapse_"+sdId);
 }

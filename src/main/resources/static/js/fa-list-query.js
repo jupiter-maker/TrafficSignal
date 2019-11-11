@@ -8,8 +8,8 @@ $(function () {
 });
 
 //改变方案搜索条件
-function change_fa_search(e) {
-    search = $(e).val();
+function change_fa_search() {
+    search = $("#fa_name_search").val();
     to_page(1);
 }
 

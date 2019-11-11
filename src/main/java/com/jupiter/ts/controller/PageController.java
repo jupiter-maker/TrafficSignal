@@ -1,13 +1,9 @@
 package com.jupiter.ts.controller;
 
 
-import com.jupiter.ts.mapper.BrigadeExtMapper;
-import com.jupiter.ts.mapper.IntersectionMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * 用于不同页面之间的跳转
@@ -24,13 +20,7 @@ public class PageController {
         return "index";
     }
 
-    //大队信息统计页
-    @GetMapping("/statistic/brigades")
-    public String stsBrigadesPage(Model model) {
-        model.addAttribute("sectionId", "brigades");
-        model.addAttribute("sectionName", "大队列表");
-        return "index";
-    }
+
 
     //大队信息统计页
     @GetMapping("/statistic/brigade/roads")
@@ -66,7 +56,7 @@ public class PageController {
     public String addIntersection(Model model) {
         model.addAttribute("sectionId", "addIntersection");
         model.addAttribute("sectionName", "路口信息录入");
-        return "intersectionsAdd";
+        return "intersectionAdd";
     }
 
     /**
@@ -121,9 +111,28 @@ public class PageController {
      * 方案查询页面
      */
     @GetMapping("/projects/query")
-    public String projectQuery(Model model){
+    public String projectsQuery(Model model){
         model.addAttribute("sectionId", "queryProjects");
         model.addAttribute("sectionName", "方案信息查询");
         return "projectsQuery";
+    }
+    /**
+     * 方案编辑页面
+     */
+    @GetMapping("/projects/edit")
+    public String projectsEdit(Model model){
+        model.addAttribute("sectionId", "projectsEdit");
+        model.addAttribute("sectionName", "方案信息编辑");
+        return "projectsEdit";
+    }
+
+    /**
+     * 统计页面
+     */
+    @GetMapping("/brigades/sts")
+    public String brigadesSts(Model model){
+        model.addAttribute("sectionId", "brigadesSts");
+        model.addAttribute("sectionName", "大队信息统计");
+        return "brigadesSts";
     }
 }

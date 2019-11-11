@@ -1,104 +1,8 @@
-$(function () {
-    if (isEmpty($("#fa_id").val())) {
-        //隐藏方案信息div
-        $("#fa_info_table").hide();
-    }
+$(function(){
+    //初始化相位信息
+    init_phase_page($("#fa_id").val())
 });
-
-//判断字符是否为空
-function isEmpty(obj) {
-    if (typeof obj == "undefined" || obj == null || obj == "") {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-//0-60正则匹配
-function isNumber(str) {
-    var regExp = /^[0-9]*$/;
-    var result = regExp.test(str);
-    return result;
-}
-
-//校验方案表单数据
-function validate_add_faform() {
-    var faName = $("#faName_add_input").val();
-    var faMethod = $("#faMethod_add_input").val();
-    var faXwc = $("#faXwc_add_input").val();
-    var faZqcd = $("#faZqcd_add_input").val();
-    if (isEmpty(faName) || isEmpty(faMethod) || isEmpty(faXwc) || isEmpty(faZqcd)) {
-        alert("所有选项为必填项");
-        return false;
-    }
-    if (!isNumber(faXwc) || !isNumber(faZqcd)) {
-        alert("相位差与周期长度应为数字！");
-        return false;
-    }
-    return true;
-
-}
-
-//添加或修改方案
-function project_create_or_update() {
-    if (!validate_add_faform()) {
-        return false;
-    }
-    //发送ajax请求保存方案
-    //给form表单中的数据序列化为字符串
-    $.ajax({
-        url: "/project/save",
-        type: "POST",
-        data: $("#fa_add_table form").serialize(),
-        success: function (result) {
-            if (result.status == 200) {
-                //添加成功拿到方案id
-                var faId = result.data.id;
-                //将方案id添加到录入表格中
-                $("#fa_id").val(faId);
-                show_fa_info(faId);
-
-            } else {
-                alert(result.msg);
-            }
-        }
-    });
-}
-
-//将添加的方案信息回显在页面
-function show_fa_info(faId) {
-    $.ajax({
-        url: "/project/" + faId,
-        type: "GET",
-        success: function (result) {
-            if (result.status == 200) {
-                //隐藏添加方案div
-                $("#fa_add_table").hide();
-                //往方案信息div内填充数据
-                $("#faName_info_static").text(result.data.faName);
-                $("#faMethod_info_static").text(result.data.faMethod);
-                $("#faXwc_info_static").text(result.data.faXwc + 's');
-                $("#faZqcd_info_static").text(result.data.faZqcd + 's');
-                $("#faCreate_info_static").text(moment(result.data.faCreate).format("YYYY-MM-DD HH:mm"));
-                //显示方案信息div
-                $("#fa_info_table").show();
-                //回显该方案对应的相位信息
-                init_phase_page($("#fa_id").val());
-            } else {
-                alert(result.msg);
-            }
-        }
-    });
-}
-
-//打开方案修改表格
-function open_fa_update_table() {
-    //隐藏方案信息块
-    $("#fa_info_table").hide();
-    //打开方案信息录入表格
-    $("#fa_add_table").show();
-}
-
+//解析显示相位信息
 function init_phase_page(id) {
     $.ajax({
         url: "/phase/list",
@@ -114,7 +18,6 @@ function init_phase_page(id) {
         }
     });
 }
-
 //解析显示相位信息
 function build_fa_phase_table(result) {
     //清空table表格
@@ -147,7 +50,6 @@ function build_fa_phase_table(result) {
             .append(xwWaGreenTd).append(xwWaRedTd).append(btnTd).appendTo("#fa_phase_table tbody");
     });
 }
-
 //删除相位
 function delete_phase(e) {
     //弹出确认删除对话框
@@ -167,28 +69,6 @@ function delete_phase(e) {
         });
     }
 }
-
-//将该相位设置为主相位
-function edit_fa_zxw(e) {
-    //弹出确认删除对话框
-    var xwName = $(e).parents("tr").find("td:eq(1)").text();
-    if (confirm("确认将【" + xwName + "】设置为该方案主相位吗？")) {
-        $.ajax({
-            url: "/project/setZxw",
-            type: "post",
-            data: "faId=" + $("#fa_id").val() + "&faZxwId=" + $(e).attr("edit_id"),
-            success: function (result) {
-                if (result.status == 200) {
-                    alert("设置主相位成功！");
-                    init_phase_page($("#fa_id").val());
-                } else {
-                    alert(result.msg);
-                }
-            }
-        });
-    }
-}
-
 //打开相位添加模态框
 function add_phase_modal() {
     var formLength = $(".add-fa-xw-tr").length;
@@ -285,7 +165,6 @@ function add_phase_modal() {
     //$("#is_interval_table tbody").append(addSdForm);
 
 }
-
 //增加相位
 function add_fa_xw(e) {
     //1、模态框中填写的表单数据提交给服务器进行保存
@@ -322,12 +201,10 @@ function add_fa_xw(e) {
 
     });
 }
-
 //取消操作
 function cancel_fa_xw() {
     init_phase_page($("#fa_id").val());
 }
-
 //校验相位输入表单
 function validate_add_fa_xw() {
     var xwName = $("#xwName").val();
@@ -352,4 +229,75 @@ function validate_add_fa_xw() {
     }
     return true;
 
+}
+//将该相位设置为主相位
+function edit_fa_zxw(e) {
+    //弹出确认设置对话框
+    var xwName = $(e).parents("tr").find("td:eq(1)").text();
+    if (confirm("确认将【" + xwName + "】设置为该方案主相位吗？")) {
+        $.ajax({
+            url: "/project/setZxw",
+            type: "post",
+            data: "faId=" + $("#fa_id").val() + "&faZxwId=" + $(e).attr("edit_id"),
+            success: function (result) {
+                if (result.status == 200) {
+                    alert("设置主相位成功！");
+                    init_phase_page($("#fa_id").val());
+                    update_project_info($("#fa_id").val());
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
+    }
+}
+//根据方案id更新信息div模块
+function update_project_info(faId){
+    $.ajax({
+        url: "/project/" + faId,
+        type: "GET",
+        success: function (result) {
+            if (result.status == 200) {
+                var project = result.data;
+                $("#fa_modified").text(moment(project.faModified).format("YYYY-MM-DD HH-mm"));
+                $("#fa_method").text(project.faMethod);
+                $("#fa_zxw_name").text(project.faZxwName);
+            }
+        }
+    });
+}
+//删除相位
+function delete_phase(e) {
+    //弹出确认删除对话框
+    var xwName = $(e).parents("tr").find("td:eq(1)").text();
+    if (confirm("确认删除【" + xwName + "】吗？")) {
+        $.ajax({
+            url: "/phase/" + $(e).attr("delete_id"),
+            type: "DELETE",
+            success: function (result) {
+                if (result.status == 200) {
+                    //alert(result.msg);
+                    init_phase_page($("#fa_id").val());
+                    update_project_info($("#fa_id").val());
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
+    }
+}
+
+//判断字符是否为空
+function isEmpty(obj) {
+    if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+    } else {
+        return false;
+    }
+}
+//0-60正则匹配
+function isNumber(str) {
+    var regExp = /^[0-9]*$/;
+    var result = regExp.test(str);
+    return result;
 }

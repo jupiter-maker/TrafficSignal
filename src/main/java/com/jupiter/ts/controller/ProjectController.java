@@ -3,10 +3,12 @@ package com.jupiter.ts.controller;
 import com.github.pagehelper.PageInfo;
 import com.jupiter.ts.dto.TsResultDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
+import com.jupiter.ts.exception.CustomizeException;
 import com.jupiter.ts.model.Project;
 import com.jupiter.ts.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +23,20 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    //跳转方案详情页
+    @GetMapping("/info/{id}")
+    public String skipProjectInfoById(@PathVariable("id") Integer id, Model model){
+
+        Project project = projectService.getProjectInfoById(id);
+        if(project == null){
+            throw new CustomizeException(CustomizeErrorCode.PROJECT_NOT_FOUND);
+        }else{
+            model.addAttribute("faInfo",project);
+        }
+        model.addAttribute("sectionId","projectInfo");
+        model.addAttribute("sectionName","方案详情页");
+        return "projectInfo";
+    }
     @GetMapping("all")
     @ResponseBody
     public TsResultDto getAllProject(){
@@ -40,6 +56,17 @@ public class ProjectController {
             return TsResultDto.build(CustomizeErrorCode.PROJECT_NOT_FOUND);
         }
         return TsResultDto.ok(project);
+    }
+
+    //通过方案id删除方案
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public TsResultDto deleteProjectById(@PathVariable("id") Integer id){
+        int i = projectService.deleteProjectById(id);
+        if(i != 0){
+            return TsResultDto.ok();
+        }
+        return TsResultDto.build(CustomizeErrorCode.PROJECT_DELETE_FAILED);
     }
 
     //更新或保存方案id
@@ -64,6 +91,7 @@ public class ProjectController {
         return TsResultDto.build(CustomizeErrorCode.ZXW_SET_FAILED);
     }
 
+    //分页查询方案
     @PostMapping("/list")
     @ResponseBody
     public TsResultDto getProjectsListByFaName(@RequestParam(value="pn",defaultValue="1")Integer pn,

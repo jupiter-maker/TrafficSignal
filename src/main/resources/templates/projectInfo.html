@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>路口资料</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/ts.css">
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/moment.js" type="application/javascript"></script>
+    <script src="/js/fa-info.js" type="application/javascript"></script>
+</head>
+<body>
+<!--  导航条  -->
+<div th:insert="~{navigation :: nav}"></div>
+
+
+<!--方案更新模态框 -->
+<!-- 路口资料页列表-->
+<div class="container-fluid">
+    <!--标题行  -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3 th:text="${faInfo.faName }+'-相位信息记录'"></h3>
+            <hr>
+            <span class="text-desc">
+                <span style="color:#2aabd2">更新时间：</span><span id="fa_modified"
+                    th:text="${#dates.format(faInfo.faModified,'yyyy-MM-dd HH:mm:ss')}"></span>
+                <span style="color:#2aabd2;margin-left: 10%;">控制方式：</span><span id="fa_method" th:text="${faInfo.faMethod}"></span>
+                <span style="color:#2aabd2;margin-left: 10%;">主相位：</span><span id="fa_zxw_name" th:text="${faInfo.faZxwName}"></span>
+                <span style="color:#2aabd2;margin-left: 10%;">相位差：</span><span id="fa_xwc" th:text="${faInfo.faXwc}"></span>
+                <span style="color:#2aabd2;margin-left: 10%;">周期长度：</span><span id="fa_zqcd" th:text="${faInfo.faZqcd}"></span>
+                <input type='hidden' id='fa_id' th:value="${faInfo.id}">
+            </span>
+            <div class="col-md-offset-11">
+                <button type="button" class="btn btn-info" onclick="add_phase_modal();">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加相位
+                </button>
+            </div>
+            <hr>
+        </div>
+
+    </div>
+    <div class="row">
+        <table class="table table-bordered" id="fa_phase_table">
+            <thead>
+            <tr>
+                <th style="color:#2aabd2">相位号</th>
+                <th style="color:#2aabd2">相位</th>
+                <th style="color:#2aabd2">绿灯</th>
+                <th style="color:#2aabd2">黄灯</th>
+                <th style="color:#2aabd2">红灯</th>
+                <th style="color:#2aabd2">机动车绿闪</th>
+                <th style="color:#2aabd2">机动车红闪</th>
+                <th style="color:#2aabd2">行人绿闪</th>
+                <th style="color:#2aabd2">行人红闪</th>
+                <th style="color:#2aabd2">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

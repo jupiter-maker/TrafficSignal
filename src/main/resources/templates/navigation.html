@@ -6,22 +6,11 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
-                    <img alt="TrafficLight" src="https://img1.912688.com/265611ea-1b43-4f90-83ba-9e3197186893.jpg#" style="width: 25px;">
+                    <img alt="TrafficLight" src="/imgs/title.png" style="width: 25px;">
                 </a>
                 <a class="navbar-brand nav-title" href="/">交通信号配时管理系统</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-<!--                <ul class="nav navbar-nav">-->
-<!--                    <li th:class="${sectionId  == 'brigades'}? 'active':''">-->
-<!--                        <a href="/">大队列表</a>-->
-<!--                    </li>-->
-<!--                    <li th:class="${sectionId  == 'intersections'}? 'active':''" >-->
-<!--                        <a href="/intersections">路口管理</a>-->
-<!--                    </li>-->
-<!--                    <li th:class="${sectionId  == 'brigadeIntersection'}? 'active':''" >-->
-<!--                        <a href="/brigade/intersections">大队信息</a>-->
-<!--                    </li>-->
-<!--                </ul>-->
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -64,14 +53,13 @@
                             统计信息<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/statistic/brigades">大队列表</a></li>
+                            <li><a href="/brigades/sts">大队统计</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/statistic/brigade/roads">大队辖区道路列表</a></li>
+                            <li><a href="/roads/sts">道路统计</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">道路对应路口数</a></li>
+                            <li><a href="/intersections/sts">路口统计</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">参数配置路口数</a></li>
-                            <li role="separator" class="divider"></li>
+                            <li><a href="/projects/sts">方案统计</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -82,8 +70,7 @@
                 </ul>
             </div>
 
-
-        </div><!-- /.container-fluid -->
+        </div>
     </nav>
 
 </div>

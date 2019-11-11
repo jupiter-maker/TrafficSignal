@@ -17,7 +17,7 @@
     <select id="getProjectsListByFaName" parameterType="java.lang.String" resultType="com.jupiter.ts.dto.ProjectDto">
         SELECT fa.id,fa_name,fa_method,COUNT(*) xw_num,fa_zxw_name,fa_xwc,fa_zqcd
         FROM ts_fa fa
-        INNER JOIN ts_xw xw ON fa.id=xw.xw_fa_id
+        LEFT JOIN ts_xw xw ON fa.id=xw.xw_fa_id
         WHERE fa_name LIKE #{search}
         GROUP BY fa.id
     </select>
@@ -25,7 +25,7 @@
     <select id="getProjectsList" resultType="com.jupiter.ts.dto.ProjectDto">
         SELECT fa.id,fa_name,fa_method,COUNT(*) xw_num,fa_zxw_name,fa_xwc,fa_zqcd
         FROM ts_fa fa
-        INNER JOIN ts_xw xw ON fa.id=xw.xw_fa_id
+        LEFT JOIN ts_xw xw ON fa.id=xw.xw_fa_id
         GROUP BY fa.id
     </select>
     <!-- 插入方案信息并返回自增主键id -->

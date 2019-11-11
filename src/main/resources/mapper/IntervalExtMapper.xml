@@ -4,14 +4,18 @@
     <resultMap id="BaseResultMap" type="com.jupiter.ts.dto.IntervalDto">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="sd_start" jdbcType="VARCHAR" property="sdStart" />
+        <result column="fa_id" jdbcType="INTEGER" property="faId" />
         <result column="sd_end" jdbcType="VARCHAR" property="sdEnd" />
         <result column="fa_name" jdbcType="VARCHAR" property="faName" />
         <result column="fa_method" jdbcType="BIGINT" property="faMethod" />
-        <result column="fa_zxw" jdbcType="BIGINT" property="faZxw" />
+        <result column="fa_zxw" jdbcType="INTEGER" property="faZxw" />
+        <result column="fa_xwc" jdbcType="INTEGER" property="faXwc" />
+        <result column="fa_zqcd" jdbcType="INTEGER" property="faZqcd" />
+        <result column="fa_zxw_name" jdbcType="VARCHAR" property="faZxwName" />
     </resultMap>
 
     <select id="selectByIsId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        SELECT sd.id,sd_start,sd_end,fa_name,fa_method,fa_zxw
+        SELECT sd.id,fa.id fa_id,sd_start,sd_end,fa_name,fa_method,fa_zxw,fa_zxw_name,fa_xwc,fa_zqcd
         FROM ts_sd sd
         INNER JOIN ts_fa fa
         ON sd.sd_fa_id = fa.id
