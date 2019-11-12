@@ -259,7 +259,7 @@ function update_project_info(faId){
         success: function (result) {
             if (result.status == 200) {
                 var project = result.data;
-                $("#fa_modified").text(moment(project.faModified).format("YYYY-MM-DD HH-mm"));
+                $("#fa_modified").text(moment(project.faModified).format("YYYY-MM-DD HH:mm"));
                 $("#fa_method").text(project.faMethod);
                 $("#fa_zxw_name").text(project.faZxwName);
             }

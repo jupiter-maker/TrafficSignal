@@ -26,7 +26,7 @@
             <hr>
             <span class="text-desc">
                 <span style="color:#2aabd2">更新时间：</span><span id="fa_modified"
-                    th:text="${#dates.format(faInfo.faModified,'yyyy-MM-dd HH:mm:ss')}"></span>
+                    th:text="${#dates.format(faInfo.faModified,'yyyy-MM-dd HH:mm')}"></span>
                 <span style="color:#2aabd2;margin-left: 10%;">控制方式：</span><span id="fa_method" th:text="${faInfo.faMethod}"></span>
                 <span style="color:#2aabd2;margin-left: 10%;">主相位：</span><span id="fa_zxw_name" th:text="${faInfo.faZxwName}"></span>
                 <span style="color:#2aabd2;margin-left: 10%;">相位差：</span><span id="fa_xwc" th:text="${faInfo.faXwc}"></span>

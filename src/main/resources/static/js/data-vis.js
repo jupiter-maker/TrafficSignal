@@ -1,4 +1,3 @@
-
 function init_brigades_sts(){
     $.ajax({
         url: "/brigade/sts",
@@ -41,6 +40,37 @@ function init_is_sts(){
         }
     });
 }
+function init_fa_sts(){
+    $.ajax({
+        url: "/project/sts",
+        type: "GET",
+        success: function (result) {
+            if (result.status == 200) {
+                //alert(result.msg);
+                //解析并显示路口数据可视化
+                build_fa_sts(result);
+            }
+
+        }
+    });
+}
+function build_fa_sts(result){
+    var roadSts = result.data;
+    var faNameArray = new Array();
+    var isNumArray = new Array();
+    var xwNumArray = new Array();
+    var exportJson = [];
+    $.each(roadSts,function(index,item){
+        //xAxis += item.ddName+",";
+        faNameArray[index] = item.faName;
+        isNumArray[index] = item.isNum;
+        xwNumArray[index] = item.xwNum;
+
+    });
+    //构建方案-统计图
+    chart_fa_sts("fa_sts",faNameArray,isNumArray,xwNumArray);
+
+}
 function build_is_sts(result){
     var roadSts = result.data;
     var ddNameArray = new Array();
@@ -60,6 +90,87 @@ function build_is_sts(result){
     //构建道路-路口-统计图
     chart_is_sts("is_sts",ddNameArray,isSdNumArray,isSdNotNumArray);
 
+}
+function build_dl_sts(result){
+    var roadSts = result.data;
+    var dlNameArray = new Array();
+    var exportJson = [];
+    $.each(roadSts,function(index,item){
+        //xAxis += item.ddName+",";
+        dlNameArray[index] = item.ddName+"-"+item.dlName;
+        var param = {};
+        param.value = item.isNum;
+        param.name = item.ddName+"-"+item.dlName;
+        exportJson.push(param);
+    });
+    //构建道路-路口-统计图
+    chart_dl_is_sts("dl_is",dlNameArray,exportJson);
+
+}
+function build_dd_sts(result){
+    var brigadeSts = result.data;
+    var ddNameArray = new Array();
+    var dlNumArray = new Array();
+    var isNumArray = new Array();
+    $.each(brigadeSts,function(index,item){
+        //xAxis += item.ddName+",";
+        ddNameArray[index] = item.ddName;
+        dlNumArray[index] = item.dlNum;
+        isNumArray[index] = item.isNum;
+    });
+    //构建大队-道路-统计图
+    chart_dd_dl_sts("dd_dl","大队-道路-统计",ddNameArray,dlNumArray);
+    chart_dd_is_sts("dd_is","大队-路口-统计",ddNameArray,isNumArray);
+}
+function chart_fa_sts(e,faNameArray,isNumArray,xwNumArray){
+    var projectChart = echarts.init(document.getElementById(e));
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '方案-相位-路口-统计',
+            subtext: '数据分析'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            //data: ['2011年', '2012年']
+            data: ['路口数', '相位数']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+            type: 'category',
+            //data: ['巴西','印尼','美国','印度','中国','世界人口(万)']
+            data: faNameArray
+        },
+        series: [
+            {
+                name: '路口数',
+                type: 'bar',
+                //data: [18203, 23489, 29034, 104970, 131744, 630230]
+                data: isNumArray
+            },
+            {
+                name: '相位数',
+                type: 'bar',
+                //data: [19325, 23438, 31000, 121594, 134141, 681807]
+                data: xwNumArray
+            }
+        ]
+    };
+    projectChart.setOption(option);
 }
 function chart_is_sts(e,ddNameArray,isSdNumArray,isSdNotNumArray){
     var roadChart = echarts.init(document.getElementById(e));
@@ -115,37 +226,6 @@ function chart_is_sts(e,ddNameArray,isSdNumArray,isSdNotNumArray){
         ]
     };
     roadChart.setOption(option);
-}
-function build_dl_sts(result){
-    var roadSts = result.data;
-    var dlNameArray = new Array();
-    var exportJson = [];
-    $.each(roadSts,function(index,item){
-        //xAxis += item.ddName+",";
-        dlNameArray[index] = item.ddName+"-"+item.dlName;
-        var param = {};
-        param.value = item.isNum;
-        param.name = item.ddName+"-"+item.dlName;
-        exportJson.push(param);
-    });
-    //构建道路-路口-统计图
-    chart_dl_is_sts("dl_is",dlNameArray,exportJson);
-
-}
-function build_dd_sts(result){
-    var brigadeSts = result.data;
-    var ddNameArray = new Array();
-    var dlNumArray = new Array();
-    var isNumArray = new Array();
-    $.each(brigadeSts,function(index,item){
-        //xAxis += item.ddName+",";
-        ddNameArray[index] = item.ddName;
-        dlNumArray[index] = item.dlNum;
-        isNumArray[index] = item.isNum;
-    });
-    //构建大队-道路-统计图
-    chart_dd_dl_sts("dd_dl","大队-道路-统计",ddNameArray,dlNumArray);
-    chart_dd_is_sts("dd_is","大队-路口-统计",ddNameArray,isNumArray);
 }
 function chart_dd_dl_sts(e,title,ddNameArray,numArray){
     var brigadeChart = echarts.init(document.getElementById(e));

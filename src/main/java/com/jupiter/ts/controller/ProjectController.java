@@ -1,9 +1,13 @@
 package com.jupiter.ts.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.jupiter.ts.dto.ProjectsSts;
 import com.jupiter.ts.dto.TsResultDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.exception.CustomizeException;
+import com.jupiter.ts.mapper.IntervalMapper;
+import com.jupiter.ts.model.Interval;
+import com.jupiter.ts.model.IntervalExample;
 import com.jupiter.ts.model.Project;
 import com.jupiter.ts.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 方案选择Controller
@@ -22,6 +28,8 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private IntervalMapper intervalMapper;
 
     //跳转方案详情页
     @GetMapping("/info/{id}")
@@ -99,4 +107,13 @@ public class ProjectController {
         PageInfo pageInfo= projectService.getProjectsListByFaName(pn, 10, search);
         return TsResultDto.ok(pageInfo);
     }
+
+    //方案信息统计
+    @GetMapping("/sts")
+    @ResponseBody
+    public TsResultDto getProjectsSts(){
+        List<ProjectsSts> projectsSts = projectService.getProjectsSts();
+        return TsResultDto.ok(projectsSts);
+    }
+
 }

@@ -15,20 +15,12 @@ public class PageController {
     //返回首页
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("sectionId", "brigades");
-        model.addAttribute("sectionName", "大队列表");
-        return "index";
+        model.addAttribute("sectionId", "brigadesSts");
+        model.addAttribute("sectionName", "大队信息统计");
+        return "brigadesSts";
     }
 
 
-
-    //大队信息统计页
-    @GetMapping("/statistic/brigade/roads")
-    public String stsBrigadeRoadsPage(Model model) {
-        model.addAttribute("sectionId", "brigades");
-        model.addAttribute("sectionName", "大队辖区道路列表");
-        return "brigadeRoads";
-    }
     /**
      * 路口信息管理页面
      *
@@ -146,5 +138,11 @@ public class PageController {
         model.addAttribute("sectionId", "intersectionsSts");
         model.addAttribute("sectionName", "路口-信息统计");
         return "intersectionsSts";
+    }
+    @GetMapping("/projects/sts")
+    public String projectsSts(Model model){
+        model.addAttribute("sectionId", "projectsSts");
+        model.addAttribute("sectionName", "方案-路口统计");
+        return "projectsSts";
     }
 }

@@ -4,12 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jupiter.ts.dto.IntersectionDto;
 import com.jupiter.ts.dto.ProjectDto;
+import com.jupiter.ts.dto.ProjectsSts;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.exception.CustomizeException;
-import com.jupiter.ts.mapper.IntervalMapper;
-import com.jupiter.ts.mapper.PhaseMapper;
-import com.jupiter.ts.mapper.ProjectExtMapper;
-import com.jupiter.ts.mapper.ProjectMapper;
+import com.jupiter.ts.mapper.*;
 import com.jupiter.ts.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 方案选择Service
@@ -32,6 +32,8 @@ public class ProjectService {
     private PhaseMapper phaseMapper;
     @Autowired
     private IntervalMapper intervalMapper;
+    @Autowired
+    private IntersectionMapper intersectionMapper;
 
     //获取所有方方案信息
     public List<Project> getAllProject(){
@@ -88,6 +90,7 @@ public class ProjectService {
         }catch(Exception e){
             throw new CustomizeException(CustomizeErrorCode.PROJECT_NOT_FOUND);
         }
+
         PageInfo page = new PageInfo(projectDtos,rows);
         return page;
     }
@@ -112,6 +115,37 @@ public class ProjectService {
            throw new CustomizeException(CustomizeErrorCode.PROJECT_DELETE_FAILED);
        }
         return i;
+    }
+
+    //返回方案信息统计信息
+    public List<ProjectsSts> getProjectsSts() {
+        List<ProjectsSts> projectsSts = projectExtMapper.getProjectsSts();
+        PhaseExample phaseExample;
+        IntervalExample intervalExample;
+        for(ProjectsSts p:projectsSts){
+            //校正相位数
+            if(p.getXwNum() == 1){
+                phaseExample = new PhaseExample();
+                phaseExample.createCriteria().andXwFaIdEqualTo(p.getId());
+                List<Phase> phases = phaseMapper.selectByExample(phaseExample);
+                if(phases == null || phases.size() == 0){
+                    p.setXwNum(0);
+                }
+            }
+            //先找出使用该方案的时段
+            intervalExample = new IntervalExample();
+            intervalExample.createCriteria().andSdFaIdEqualTo(p.getId());
+            List<Interval> intervals = intervalMapper.selectByExample(intervalExample);
+            if(intervals == null || intervals.size() == 0){
+                //没有时段应用该方案
+                p.setIsNum(0);
+            }else{
+                //将时段的isId去重转换为集合求size--路口数
+                Set<Integer> isNum = intervals.stream().map(interval -> interval.getSdIsId()).collect(Collectors.toSet());
+                p.setIsNum(isNum.size());
+            }
+        }
+        return projectsSts;
     }
 }
 
