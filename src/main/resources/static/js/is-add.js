@@ -331,9 +331,10 @@ function build_is_interval_table(result) {
             $("<span style='color:#2aabd2'></span>").html("时间段"+index)
         );
         var sdTd = $("<td style='width:18%;'></td>").html(item.sdStart+" - "+item.sdEnd);
-        var sdFaTd = $("<td style='width:15%;'></td>").html(item.faName);
+        var faNameLink = $("<a></a>").append(item.faName).attr("href","/project/info/"+item.faId);
+        var sdFaTd = $("<td style='width:15%;'></td>").append(faNameLink);
         var sdFaMethodTd = $("<td style='width:15%;'></td>").html(item.faMethod);
-        var sdZxw = $("<td style='width:24%;'></td>").html(item.faZxw);
+        var sdZxw = $("<td style='width:24%;'></td>").html(item.faZxwName);
         //为编辑按钮添加自定义属性，id值
         // var editBtn = $("<a onclick='update_interval(this);'></a>").append(
         //     $("<span></span>").addClass("glyphicon glyphicon-pencil").attr("aria-hidden","true").append("编辑")

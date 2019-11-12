@@ -15,15 +15,15 @@
 
     <!--查询所有方案信息通过方案名搜索-->
     <select id="getProjectsListByFaName" parameterType="java.lang.String" resultType="com.jupiter.ts.dto.ProjectDto">
-        SELECT fa.id,fa_name,fa_method,,xw.xw_fa_id xw_fa_id,SUM(CASE WHEN xw.xw_fa_id IS NULL THEN 0 ELSE 1  END) xw_num,fa_zxw_name,fa_xwc,fa_zqcd
+        SELECT fa.id,fa_name,fa_method,SUM(CASE WHEN xw.xw_fa_id IS NULL THEN 0 ELSE 1  END) xw_num,fa_zxw_name,fa_xwc,fa_zqcd
         FROM ts_fa fa
         LEFT JOIN ts_xw xw ON fa.id=xw.xw_fa_id
         WHERE fa_name LIKE #{search}
-        GROUP BY fa.id
+        ORDER BY fa.fa_create
     </select>
     <!--查询所有方案信息-->
     <select id="getProjectsList" resultType="com.jupiter.ts.dto.ProjectDto">
-        SELECT fa.id,fa_name,fa_method,xw.xw_fa_id xw_fa_id,SUM(CASE WHEN xw.xw_fa_id IS NULL THEN 0 ELSE 1  END) xw_num,fa_zxw_name,fa_xwc,fa_zqcd
+        SELECT fa.id,fa_name,fa_method,SUM(CASE WHEN xw.xw_fa_id IS NULL THEN 0 ELSE 1  END) xw_num,fa_zxw_name,fa_xwc,fa_zqcd
         FROM ts_fa fa
         LEFT JOIN ts_xw xw ON fa.id=xw.xw_fa_id
         GROUP BY xw.xw_fa_id

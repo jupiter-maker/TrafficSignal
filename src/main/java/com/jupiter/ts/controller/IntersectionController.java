@@ -6,12 +6,16 @@ import com.jupiter.ts.dto.IntersectionDto;
 import com.jupiter.ts.dto.TsResultDto;
 import com.jupiter.ts.exception.CustomizeErrorCode;
 import com.jupiter.ts.exception.CustomizeException;
+import com.jupiter.ts.mapper.IntersectionMapper;
 import com.jupiter.ts.model.Intersection;
 import com.jupiter.ts.service.IntersectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Random;
+import java.util.UUID;
 
 @Controller
 /**
@@ -22,6 +26,8 @@ public class IntersectionController {
 
     @Autowired
     private IntersectionService intersectionService;
+    @Autowired
+    private IntersectionMapper intersectionMapper;
 
 
     /**
@@ -136,4 +142,25 @@ public class IntersectionController {
         model.addAttribute("sectionName","路口详情页");
         return "intersectionInfo";
     }
+
+//    @GetMapping("/test")
+//    @ResponseBody
+//    public TsResultDto addTestIs(){
+//        Intersection intersection = new Intersection();
+//        Random random = new Random();
+//        for(int i = 0;i<15;i++){
+//            //添加第六大队路口
+//            intersection.setIsDdId(6);//第六大队
+//            intersection.setIsDlId(16);//第六大队随机道路
+//            intersection.setIsXhId(random.nextInt(6)+1);
+//            //随机道路名
+//            intersection.setIsName("测试道路"+ UUID.randomUUID().toString().substring(0,3)+random.nextInt(100));
+//            intersection.setIsWhName("维护人员测试"+ UUID.randomUUID().toString().substring(0,2));
+//            intersection.setIsCreate(System.currentTimeMillis());
+//            intersection.setIsModified(System.currentTimeMillis());
+//            intersection.setIsXwNum(6);
+//            intersectionMapper.insertSelective(intersection);
+//        }
+//        return TsResultDto.ok();
+//    }
 }

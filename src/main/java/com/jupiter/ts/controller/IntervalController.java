@@ -31,6 +31,7 @@ public class IntervalController {
         return TsResultDto.build(CustomizeErrorCode.INTERVAL_CREATE_FAILED);
     }
 
+    //根据路口id查询时段信息
     @GetMapping("/{isId}")
     @ResponseBody
     public TsResultDto selectByIsId(@PathVariable Integer isId){

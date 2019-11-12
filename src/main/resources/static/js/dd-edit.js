@@ -41,7 +41,7 @@ function build_dd_table(result) {
 
         var ddIdTd = $("<td></td>").append("&raquo;");
         var ddRespTd = $("<td></td>").append(item.ddResp);
-        var ddNameLink = $("<a></a>").append(item.ddName).attr("href","/intersection/info/"+item.id);
+        var ddNameLink = $("<a></a>").append(item.ddName).attr("href","/brigades/sts");
         var ddNameTd = $("<td></td>").append(ddNameLink);
         var ddRespPhoneTd = $("<td></td>").append(item.ddRespPhone);
         var ddRespAddressTd = $("<td></td>").append(item.ddRespAddress);
