@@ -30,6 +30,5 @@ public class AnnunciatorController {
             return TsResultDto.build(CustomizeErrorCode.ANNUNCIATOR_NOT_FOUND);
         }
         return TsResultDto.ok(annunciators);
-
     }
 }

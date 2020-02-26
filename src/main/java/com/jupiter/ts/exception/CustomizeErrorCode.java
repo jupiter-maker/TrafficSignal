@@ -27,7 +27,10 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     PHASE_DELETE_FAILED(2024,"相位删除失败！"),
     ZXW_SET_FAILED(2025,"主相位设置失败！"),
     PROJECT_DELETE_FAILED(2026,"方案删除失败！"),
-    BRIGADE_STS_FAILED(2027,"大队统计失败！")
+    BRIGADE_STS_FAILED(2027,"大队统计失败！"),
+    USER_LOGIN_FAILED(2028,"用户登陆失败！"),
+    USER_CHECK_FAILED(2029,"用户名或密码错误！"),
+    USER_REGISTER_FAILED(2030,"用户注册失败！")
     ;
 
    private Integer status;

@@ -64,8 +64,8 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li >
-                        <a href="/">登录</a>
+                    <li th:if="${session.user != null}">
+                        <a href="/"><span th:text="${session.user.getUsername()}"></span></a>
                     </li>
                 </ul>
             </div>

@@ -50,7 +50,7 @@
 <!--        <table schema="" tableName="ts_dl" domainObjectName="Road" >-->
 <!--        </table>-->
         <!-- 相位表 -->
-        <table schema="" tableName="ts_xw" domainObjectName="Phase" >
+        <table schema="" tableName="ts_user" domainObjectName="User" >
         </table>
 
 
